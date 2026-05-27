@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact Us - ComponentLib</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&amp;display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-bg: #ffffff;
+    --color-button-bg: #25D366; /* WhatsApp green */
+    --color-button-text: #ffffff;
+    --color-phone-bg: #3b82f6; /* Blue for phone */
+    --color-email-bg: #ef4444; /* Red for email */
+    --container-max-width: 1200px;
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+    --shadow-light: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Container */
+  .container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* Contact Section */
+  section.contact {
+    background-color: #f9fafb;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-light);
+    padding: 3rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  /* Heading */
+  section.contact h2 {
+    flex-basis: 100%;
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  /* Description */
+  section.contact p.description {
+    flex-basis: 100%;
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Contact Methods container */
+  .contact-methods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  /* Individual contact card */
+  .contact-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-light);
+    flex: 1 1 220px;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    min-height: 280px;
+  }
+
+  /* Contact icon container */
+  .icon-circle {
+    background-color: #e5e7eb;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+    font-size: 2rem;
+  }
+
+  /* Phone number */
+  .contact-phone {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+  }
+
+  /* Contact email */
+  .contact-email {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--color-text-primary);
+    word-break: break-all;
+  }
+
+  /* Base button styles */
+  .btn-contact {
+    margin-top: auto;
+    padding: 0.85rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: all var(--transition-speed);
+    user-select: none;
+    color: var(--color-button-text);
+  }
+
+  /* WhatsApp button */
+  .btn-whatsapp {
+    background-color: var(--color-button-bg);
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+  }
+  .btn-whatsapp:hover,
+  .btn-whatsapp:focus {
+    background-color: #1ebe57;
+    box-shadow: 0 6px 14px rgba(37, 211, 102, 0.5);
+    outline: none;
+  }
+  .btn-whatsapp:active {
+    background-color: #18ad4d;
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.2);
+  }
+
+  /* Phone button */
+  .btn-phone {
+    background-color: var(--color-phone-bg);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+  }
+  .btn-phone:hover,
+  .btn-phone:focus {
+    background-color: #2563eb;
+    box-shadow: 0 6px 14px rgba(59, 130, 246, 0.5);
+    outline: none;
+  }
+  .btn-phone:active {
+    background-color: #1d4ed8;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+  }
+
+  /* Email button */
+  .btn-email {
+    background-color: var(--color-email-bg);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+  }
+  .btn-email:hover,
+  .btn-email:focus {
+    background-color: #dc2626;
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.5);
+    outline: none;
+  }
+  .btn-email:active {
+    background-color: #b91c1c;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+  }
+
+  /* Button icons */
+  .btn-contact svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  /* Home link */
+  .home-link {
+    margin-top: 2rem;
+    text-align: center;
+    width: 100%;
+  }
+  .home-link a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .home-link a:hover {
+    color: var(--color-text-primary);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .contact-methods {
+      flex-direction: column;
+      max-width: 100%;
+    }
+    .contact-card {
+      flex-basis: 100%;
+    }
+    section.contact h2 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="container" role="main">
+    <section class="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact Us</h2>
+      <p class="description">
+        We're here to help! Reach out via phone, email, or WhatsApp and we'll get back to you as soon as possible.
+      </p>
+      <div class="contact-methods">
+        <div class="contact-card" role="region" aria-label="Phone contact">
+          <div class="icon-circle" aria-hidden="true">
+            <!-- Phone icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.35 12.35 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.35 12.35 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div class="contact-phone" aria-label="Phone Number">+254 708 939 679</div>
+          <a href="tel:+254708939679" class="btn-contact btn-phone" aria-label="Call us now">
+            Call Now
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.35 12.35 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.35 12.35 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="contact-card" role="region" aria-label="Email contact">
+          <div class="icon-circle" style="color: var(--color-email-bg);" aria-hidden="true">
+            <!-- Email icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="contact-email" aria-label="Email Address">tomjonnes97@gmail.com</div>
+          <a href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSDbFPnmQQMcpzrTJQNMBXchVmBmdvCTFSDclXzSzPfqFkpthQhLMvDrpWmNHWRgmGpskLzm" class="btn-contact btn-email" aria-label="Send us an email">
+            Send Email
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <div class="contact-card" role="region" aria-label="WhatsApp contact">
+          <div class="icon-circle" style="color: var(--color-button-bg);" aria-hidden="true">
+            <!-- WhatsApp icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.52 3.48A11.79 11.79 0 0012.04 1C6.11 1 1.4 5.7 1.4 11.62a10.69 10.69 0 001.72 5.86L1 23l5.73-1.48a11.62 11.62 0 005.31 1.23h.1c6.01 0 10.7-4.71 10.7-10.64a10.58 10.58 0 00-2.33-6.63zm-8.51 16.5a9.58 9.58 0 01-5.16-1.46l-.36-.22-3.4.88.9-3.31-.23-.34a9.24 9.24 0 01-1.43-5.1c0-5.11 4.15-9.26 9.27-9.26a9.2 9.2 0 016.58 2.72 9.1 9.1 0 012.7 6.56c0 5.11-4.15 9.26-9.25 9.26zm5.24-7.06c-.29-.15-1.71-.84-1.98-.94-.27-.1-.46-.15-.65.15s-.74.94-.91 1.14-.33.22-.61.07a8.32 8.32 0 01-2.44-1.5 9.21 9.21 0 01-1.7-2.1c-.18-.31 0-.48.13-.63.08-.07.18-.18.27-.28a.9.9 0 00.12-.2.74.74 0 000-.65c-.07-.15-.65-1.57-.89-2.16s-.46-.5-.65-.51h-.56a1.1 1.1 0 00-.82.38 3.53 3.53 0 00-1.08 2.59 6.02 6.02 0 001.71 3.45 9.37 9.37 0 005.52 3.89 3.36 3.36 0 002.9-.65 2.47 2.47 0 00.75-1.84c0-.3-.23-.52-.52-.66z"/>
+            </svg>
+          </div>
+          <div class="contact-phone" aria-label="WhatsApp Number">+254 708 939 679</div>
+          <a href="https://wa.me/message/OUPM4AVOFWNPC1" class="btn-contact btn-whatsapp" target="_self" rel="noopener noreferrer" aria-label="Contact us on WhatsApp">
+            Chat on WhatsApp
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M20.52 3.48A11.79 11.79 0 0012.04 1C6.11 1 1.4 5.7 1.4 11.62a10.69 10.69 0 001.72 5.86L1 23l5.73-1.48a11.62 11.62 0 005.31 1.23h.1c6.01 0 10.7-4.71 10.7-10.64a10.58 10.58 0 00-2.33-6.63zm-8.51 16.5a9.58 9.58 0 01-5.16-1.46l-.36-.22-3.4.88.9-3.31-.23-.34a9.24 9.24 0 01-1.43-5.1c0-5.11 4.15-9.26 9.27-9.26a9.2 9.2 0 016.58 2.72 9.1 9.1 0 012.7 6.56c0 5.11-4.15 9.26-9.25 9.26zm5.24-7.06c-.29-.15-1.71-.84-1.98-.94-.27-.1-.46-.15-.65.15s-.74.94-.91 1.14-.33.22-.61.07a8.32 8.32 0 01-2.44-1.5 9.21 9.21 0 01-1.7-2.1c-.18-.31 0-.48.13-.63.08-.07.18-.18.27-.28a.9.9 0 00.12-.2.74.74 0 000-.65c-.07-.15-.65-1.57-.89-2.16s-.46-.5-.65-.51h-.56a1.1 1.1 0 00-.82.38 3.53 3.53 0 00-1.08 2.59 6.02 6.02 0 001.71 3.45 9.37 9.37 0 005.52 3.89 3.36 3.36 0 002.9-.65 2.47 2.47 0 00.75-1.84c0-.3-.23-.52-.52-.66z"/>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="home-link">
+          <a href="index.html">← Return Home</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Dropdown List</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f7f8;
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    width: 1020px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  .item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .item:last-child {
+    border-bottom: none;
+  }
+
+  .item-header {
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+  }
+
+  .item-header:hover {
+    background: #f0f8ff;
+  }
+
+  .item-header.active {
+    background: #e1f0ff;
+  }
+
+  .item-header .title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .item-header .arrow {
+    width: 16px;
+    height: 16px;
+    border: solid #666;
+    border-width: 0 2.5px 2.5px 0;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+    margin-left: 12px;
+  }
+
+  .item-header.active .arrow {
+    transform: rotate(-135deg);
+  }
+
+  .item-content {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    color: #555;
+    font-size: 15px;
+    background: #fafafa;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+
+  .item-content.open {
+    padding: 12px 20px;
+  }
+
+  .footer-content {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    width: 1020px;
+  }
+
+  .footer-content a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+
+  .footer-content a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<div class="container" id="dropdown-list">
+  <div class="item">
+    <div class="item-header">
+      <span class="title">BUSINESS DESCRIPTION</span>
+      <span class="arrow"></span>
+    </div>
+    <div class="item-content">
+        <p>The proposed name of the Business is Research Hub Electrical and Electronics Shop. The owner chose the title because the business aims at selling commodities based on the upcoming digital world where a lot is changing hence it will provide items to accommodate any future extensions or changes. The business will be managed by (name e.g John Doe)</p>
+    </div>
+  </div>
+  <div class="item">
+    <div class="item-header">
+      <span class="title">MARKET SHARE</span>
+      <span class="arrow"></span>
+    </div>
+    <div class="item-content">
+      <p>Details for Item Two come here. You can customize this content freely.</p>
+    </div>
+  </div>
+  <div class="item">
+    <div class="item-header">
+      <span class="title">ORGANISATION PLAN</span>
+      <span class="arrow"></span>
+    </div>
+    <div class="item-content">
+      <p>Item Three's content is shown here when clicked on the item header.</p>
+    </div>
+  </div>
+   <div class="item">
+    <div class="item-header">
+      <span class="title">MANAGEMENT PLAN</span>
+      <span class="arrow"></span>
+    </div>
+    <div class="item-content">
+      <p>Item Four's content is shown here when clicked on the item header.</p>
+    </div>
+   </div>
+     <div class="item">
+    <div class="item-header">
+      <span class="title">FINANCIAL PLAN</span>
+      <span class="arrow"></span>
+    </div>
+    <div class="item-content">
+      <p>Item Five's content is shown here when clicked on the item header.</p>
+    </div>
+    </div>
+ <div class="item">
+    <div class="item-header">
+      <span class="title">APPENDICES</span>
+      <span class="arrow"></span>
+    </div>
+    <div class="item-content">
+      <p>Item Six's content is shown here when clicked on the item header.</p>
+    </div>
+</div>
+</div>
+
+<div class="footer-content">
+   <p>To get the full Business Plan. Kindly Purchase at KES 1,000/=. Reach out to us through the contact section and our staff will serve you. <br><i><b>Remember to Send your Title during Purchase</b></i></p>
+   <p>Thank You for Trusting us</p>
+   <a href="tvet.html" class="active" aria-current="page">Click to get back to Business Plans and Projects</a><br>
+   <a href="index.html">Home Page</a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('dropdown-list');
+    const items = container.querySelectorAll('.item');
+
+    items.forEach(item => {
+      const header = item.querySelector('.item-header');
+      const content = item.querySelector('.item-content');
+
+      header.addEventListener('click', () => {
+        // Close all other open dropdowns
+        items.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.querySelector('.item-content').style.maxHeight = null;
+            otherItem.querySelector('.item-content').classList.remove('open');
+            otherItem.querySelector('.item-header').classList.remove('active');
+          }
+        });
+
+        // Toggle current item
+        const isOpen = content.classList.contains('open');
+        if (isOpen) {
+          content.style.maxHeight = null;
+          content.classList.remove('open');
+          header.classList.remove('active');
+        } else {
+          content.classList.add('open');
+          content.style.maxHeight = content.scrollHeight + 'px';
+          header.classList.add('active');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

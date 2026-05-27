@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Business Categories Slideshow - Ultimate Research Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Poppins', 'Bookman Old Style', sans-serif;
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
+            color: #222;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Navigation */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        nav h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            background: linear-gradient(45deg, #fff, #e0f7fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #004a99, #0066cc);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 74, 153, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.6);
+            background: linear-gradient(45deg, #0066cc, #0080ff);
+        }
+
+        /* Side Menu */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 35px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-btn div {
+            height: 4px;
+            background-color: #fff;
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(180deg, #234567, #1a3a5c);
+            box-shadow: 3px 0 15px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 80px 20px 20px;
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-item-header {
+            padding: 18px 24px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .menu-item-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item-header a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .arrow {
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow.down {
+            transform: rotate(45deg);
+        }
+
+        .arrow.right {
+            transform: rotate(-45deg);
+        }
+
+        .menu-item-content {
+            max-height: 0;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f0f0f0;
+            padding: 0 24px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item-content.open {
+            padding: 20px 24px;
+            max-height: 200px;
+        }
+
+        /* Slideshow */
+        .slideshow-container {
+            position: relative;
+            width: 95%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .slide {
+            display: none;
+            padding: 40px 30px;
+            min-height: 500px;
+            background: linear-gradient(135deg, #e0f7fa, #80deea);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            color: #3d0cff77;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(244, 8, 8, 0.945);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 25px 20px;
+            min-height: 140px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 77, 64, 0.3);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .card a {
+            color: hsl(244, 81%, 46%);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover a {
+            color: hsl(0, 93%, 49%);
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            background: linear-gradient(90deg, #00796b, #004d40);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        .nav-buttons button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.5rem;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .nav-buttons button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Features Section */
+        .features-section {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 3rem auto;
+            padding: 4rem 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            max-width: 1200px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .features-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature {
+            background: linear-gradient(135deg, #f0faff, #e6f7ff);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,123,255,0.2);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: #004a99;
+            font-weight: 700;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .feature img {
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-section {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 3rem auto;
+            padding: 4rem 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            max-width: 1200px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        .about-section p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 3rem auto;
+            padding: 4rem 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            max-width: 800px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-form label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .slide h2 {
+                font-size: 2rem;
+            }
+
+            .cards {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 20px;
+            }
+
+            .card {
+                min-height: 120px;
+                padding: 20px 15px;
+            }
+
+            .card .icon {
+                font-size: 2.5rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .slideshow-container {
+                width: 98%;
+            }
+
+            .slide {
+                padding: 30px 20px;
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .cards {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 15px;
+            }
+
+            .card {
+                min-height: 100px;
+                padding: 15px 10px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+.staff-btn-float {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: #f7ca04;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.staff-btn-float:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(237, 168, 19, 0.403);
+}
+
+.staff-btn-float:active {
+  transform: translateY(-1px);
+}
+                .staff-portal-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .staff-portal-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        .staff-portal-btn {
+            bottom: 10px;
+            right: 5px;
+            padding: 2.5px 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Logout button at bottom */
+.user-dropdown .logout-btn {
+  background: #ff6b00;   /* your orange color */
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 60%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+        
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <h1>ULTIMATE RESEARCH HUB</h1>
+                <ul>
+                    <li><a href="tvet.html">TVET & CDACC Business Plans</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to ULTIMATE RESEARCH HUB</h1>
+            <p>Your one-stop destination for awesome Business Plan and Project Samples.</p>
+            <a href="tvet.html" class="btn-primary">Explore Business Plans & Projects</a>
+        </section>
+
+        <!-- Side Menu -->
+        <div class="menu-btn" id="menuBtn">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <nav class="side-menu" id="sideMenu">
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <div class="menu-item-header">
+                        <a href="attachment-reports.html">ATTACHMENT REPORTS</a>
+                        <span class="arrow right"></span>
+                    </div>
+                    <div class="menu-item-content">
+                        <p>Access comprehensive attachment reports and documentation.</p>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-item-header">
+                        <a href="business-plan-notes.html">BUSINESS PLAN NOTES</a>
+                        <span class="arrow right"></span>
+                    </div>
+                    <div class="menu-item-content">
+                        <p>Detailed notes and guidelines for business plan creation.</p>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-item-header">
+                        <a href="tvet.html">BUSINESS PLANS & RESEARCH PROJECTS</a>
+                        <span class="arrow right"></span>
+                    </div>
+                    <div class="menu-item-content">
+                        <p>Complete business plans and research project samples.</p>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Slideshow -->
+        <div class="slideshow-container">
+            <section class="slide active">
+                <h2>Shops & Services</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon">⚡</div>
+                        <a href="electrical-department.html">Electrical Shop</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🛒</div>
+                        <a href="general.html">Supermarket</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">☕</div>
+                        <a href="general.html">Cyber Cafe</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🏗️</div>
+                        <a href="mechanical-automotive.html">Building & Construction</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">💳</div>
+                        <a href="general.html">M-Pesa Super Agent</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">👗</div>
+                        <a href="institutional-management.html">Fashion & Design</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">💈</div>
+                        <a href="institutional-management.html">Kinyozi & Spa</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🛠️</div>
+                        <a href="building-civil.html">Carpentry</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">⚙️</div>
+                        <a href="mechanical-automotive.html">Auto Spares</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🏭</div>
+                        <a href="mechanical-automotive.html">Garage</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🔧</div>
+                        <a href="building-civil.html">Hardware</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <h2>Hospitality & Care</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon">🏨</div>
+                        <a href="institutional-management.html">Hotel & Spa</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🍔</div>
+                        <a href="institutional-management.html">Fast Foods</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🛒</div>
+                        <a href="general.html">Grocery Shop</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🛵</div>
+                        <span>Food Delivery</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <h2>Transport & Services</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon">🚗</div>
+                        <span>Car Lift</span>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🚕</div>
+                        <span>Taxi</span>
+                    </div>
+                    <div class="card">
+                        <div class="icon">⛽</div>
+                        <span>Filling Station</span>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🚘</div>
+                        <span>Uber</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <h2>Entertainment & Farming</h2>
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon">🎉</div>
+                        <span>Night Club</span>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🌾</div>
+                        <a href="Agriculture.html">Agrovet</a>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🐔</div>
+                        <a href="Agriculture.html">Poultry Farming</a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="nav-buttons">
+                <button id="prevBtn">‹</button>
+                <button id="nextBtn">›</button>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>Our Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">📝</div>
+                    <h3>Business Plan Write-up</h3>
+                    <p>Get detailed notes and guidance about professional business plan writing with templates and examples.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Research Projects</h3>
+                    <p>Access comprehensive project notes and samples to guide you through your research and writing process.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔍</div>
+                    <h3>SEO Optimization</h3>
+                    <p>We implement best practices to improve your search engine rankings and help customers find your business with ease.</p>
+                </div>
+                <div class="feature">
+                    <img src="https://via.placeholder.com/200x120/007bff/ffffff?text=Services" alt="Other Services" width="200" height="120">
+                    <h3>Other Services</h3>
+                    <a href="other-services.html" style="color: #007bff; text-decoration: none; font-weight: 600;">Learn More</a>
+                    <p>HELB Applications, KRA PIN services, E-Citizen support, computer maintenance & repair. Contact us for assistance with any of these services.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <h2>About Us</h2>
+            <p>Welcome to Research Hub. We are passionate about creating comprehensive Attachment Reports, Business Plans, and Project Samples. We also provide detailed notes and guidance to help you capture all important aspects during your write-ups.</p>
+            <a href="contact.html" class="btn-primary">Contact Us</a>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <h2>Feedback</h2>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your feedback!'); this.reset();">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your full name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Write your message here. Tell us what you would like us to improve so that we serve you better. Thank you..." required></textarea>
+
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </section>
+<a href="gasrecords.html" class="staff-btn-float">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+  Staff Portal
+</a>
+        </main>
+
+    <footer>
+        <p>&copy; 2025 RESEARCH HUB. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Side menu functionality
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const headers = sideMenu.querySelectorAll('.menu-item-header');
+
+        menuBtn.addEventListener('click', () => {
+            sideMenu.classList.toggle('open');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                sideMenu.classList.remove('open');
+            }
+        });
+
+        // Accordion functionality
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector('.arrow');
+                const isOpen = content.classList.contains('open');
+
+                // Close all other items
+                headers.forEach(h => {
+                    const c = h.nextElementSibling;
+                    const a = h.querySelector('.arrow');
+                    if (h !== header) {
+                        c.classList.remove('open');
+                        a.classList.remove('down');
+                        a.classList.add('right');
+                    }
+                });
+
+                // Toggle current item
+                if (isOpen) {
+                    content.classList.remove('open');
+                    arrow.classList.remove('down');
+                    arrow.classList.add('right');
+                } else {
+                    content.classList.add('open');
+                    arrow.classList.remove('right');
+                    arrow.classList.add('down');
+                }
+            });
+        });
+
+        // Slideshow functionality
+        (function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentSlide = 0;
+            let slideInterval = null;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                let next = (currentSlide + 1) % slides.length;
+                showSlide(next);
+            }
+
+            function prevSlide() {
+                let prev = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(prev);
+            }
+
+            function startInterval() {
+                slideInterval = setInterval(nextSlide, 8000);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                startInterval();
+            }
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetInterval();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetInterval();
+            });
+
+            // Initialize
+            showSlide(currentSlide);
+            startInterval();
+
+            // Pause on hover
+            const container = document.querySelector('.slideshow-container');
+            container.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            container.addEventListener('mouseleave', startInterval);
+        })();
+    </script>
+</body>
+</html>

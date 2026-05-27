@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ULTIMATE FLAME GAS CENTRE - Sales Portal v2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* LOGIN */
+#login-screen{width:100%;max-width:380px;margin:auto;}
+.login-card{background:#fff;border-radius:16px;padding:2rem;border:1px solid #e5e7eb;}
+.login-logo{text-align:center;margin-bottom:1.5rem;}
+.login-logo .flame{font-size:36px;margin-bottom:8px;}
+.login-logo h1{font-size:20px;font-weight:700;color:#111;}
+.login-logo p{font-size:13px;color:#6b7280;margin-top:4px;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
+.form-group select,.form-group input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;color:#111;background:#fff;outline:none;}
+.form-group select:focus,.form-group input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.1);}
+.login-btn{width:100%;padding:12px;background:#111;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.login-btn:hover{background:#222;}
+.login-err{color:#dc2626;font-size:12px;margin-top:8px;text-align:center;min-height:18px;}
+
+/* APP */
+#app-screen{width:100%;max-width:800px;margin:auto;}
+.app-bar{background:#fff;border-radius:12px 12px 0 0;border:1px solid #e5e7eb;border-bottom:none;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.app-bar-left{display:flex;align-items:center;gap:10px;}
+.av{width:34px;height:34px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.user-info .uname{font-size:14px;font-weight:600;color:#111;}
+.user-info .urole{font-size:11px;color:#6b7280;}
+.user-info .udate{font-size:11px;color:#9ca3af;margin-top:2px;}
+.logout-btn{background:none;border:1px solid #e5e7eb;border-radius:8px;padding:6px 12px;font-size:12px;color:#6b7280;cursor:pointer;}
+.logout-btn:hover{background:#f9fafb;color:#111;}
+
+.sub-tabs{display:flex;background:#fff;border:1px solid #e5e7eb;border-top:none;border-bottom:none;padding:0 16px;gap:4px;}
+.stab{padding:10px 16px;font-size:13px;font-weight:500;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;}
+.stab.active{color:#111;border-bottom-color:#111;}
+.stab:hover:not(.active){color:#374151;}
+
+.app-body{background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:16px;overflow-y:auto;max-height:70vh;}
+
+/* INVENTORY BANNER (owner) */
+.inv-banner{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-bottom:16px;}
+.inv-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:8px 10px;}
+.inv-card-label{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;font-weight:600;}
+.inv-card-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;}
+.inv-card-row .iv-key{color:#374151;}
+.inv-card-row .iv-val{font-weight:700;color:#111;}
+.inv-card-row .iv-empty{font-weight:700;color:#d97706;}
+.inv-section-title{font-size:11px;font-weight:700;color:#374151;letter-spacing:.05em;text-transform:uppercase;margin:12px 0 6px;}
+
+/* GRAND TOTALS */
+.owner-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.ot-card{background:#f9fafb;border-radius:8px;padding:10px 12px;text-align:center;}
+.ot-label{font-size:11px;color:#6b7280;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;}
+.ot-val{font-size:16px;font-weight:700;color:#111;}
+.grand-box{display:flex;justify-content:space-between;align-items:center;background:#111;border-radius:8px;padding:12px 16px;margin-bottom:16px;}
+.grand-box .gl{font-size:13px;color:#9ca3af;}
+.grand-box .gv{font-size:22px;font-weight:700;color:#fff;}
+
+/* PRODUCT GRID */
+.grid-label{font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:16px;}
+.prod-btn{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:12px 10px;cursor:pointer;text-align:left;transition:all .15s;}
+.prod-btn:hover:not(:disabled){border-color:#6b7280;background:#f9fafb;}
+.prod-btn.sel{border-color:#111;background:#f9fafb;box-shadow:0 0 0 1px #111;}
+.prod-btn:disabled{opacity:.45;cursor:not-allowed;}
+.prod-name{font-size:13px;font-weight:600;color:#111;}
+.prod-price{font-size:12px;color:#6b7280;margin-top:2px;}
+.prod-stock{font-size:11px;margin-top:6px;padding:2px 7px;border-radius:20px;display:inline-block;font-weight:500;}
+.s-ok{background:#dcfce7;color:#166534;}
+.s-low{background:#fef3c7;color:#92400e;}
+.s-out{background:#fee2e2;color:#991b1b;}
+
+/* DEDUCT HINT */
+.deduct-hint{font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:6px 10px;margin-bottom:12px;}
+.deduct-hint strong{color:#374151;}
+
+/* SALE PANEL */
+.sale-panel{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:16px;}
+.sale-panel-title{font-size:13px;font-weight:600;color:#111;margin-bottom:12px;}
+.payment-row{display:flex;gap:8px;margin-bottom:12px;}
+.pay-btn{flex:1;padding:8px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;}
+.pay-btn.active{border-color:#111;background:#111;color:#fff;}
+.qty-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.qty-ctrl{display:flex;align-items:center;gap:8px;}
+.qbtn{width:30px;height:30px;border:1px solid #d1d5db;border-radius:6px;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#111;}
+.qbtn:disabled{opacity:.35;cursor:not-allowed;}
+.qval{font-size:16px;font-weight:700;min-width:28px;text-align:center;}
+.line-total{font-size:14px;color:#6b7280;margin-left:auto;}
+.line-total span{font-weight:700;color:#111;}
+.record-btn{width:100%;padding:11px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.record-btn:disabled{background:#9ca3af;cursor:not-allowed;}
+.record-btn:hover:not(:disabled){background:#15803d;}
+
+/* LOG */
+.log-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.log-title{font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.07em;text-transform:uppercase;}
+.empty-box{border:1px dashed #d1d5db;border-radius:10px;padding:32px 16px;text-align:center;color:#9ca3af;font-size:13px;}
+.empty-box .eicon{font-size:28px;margin-bottom:8px;}
+.log-item{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:6px;background:#fff;}
+.log-left .log-main{font-size:13px;font-weight:600;color:#111;}
+.log-left .log-meta{font-size:11px;color:#6b7280;margin-top:3px;}
+.log-left .log-deducted{font-size:11px;color:#92400e;margin-top:3px;}
+.log-right{text-align:right;flex-shrink:0;margin-left:8px;}
+.log-amount{font-size:13px;font-weight:700;color:#111;}
+.log-pay{font-size:11px;margin-top:2px;padding:1px 7px;border-radius:20px;display:inline-block;font-weight:500;}
+.pay-cash{background:#dcfce7;color:#166534;}
+.pay-till{background:#dbeafe;color:#1e40af;}
+.del-btn{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:15px;padding:0 0 0 8px;}
+.del-btn:hover{color:#dc2626;}
+
+/* ADD STOCK */
+.add-stock-section{margin-top:16px;padding-top:16px;border-top:1px solid #f3f4f6;}
+.add-stock-title{font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.stock-item{display:flex;align-items:center;gap:6px;background:#f9fafb;border-radius:8px;padding:8px 10px;border:1px solid #e5e7eb;}
+.stock-item-name{flex:1;font-size:12px;font-weight:500;color:#374151;}
+.stock-cur{font-size:12px;font-weight:700;min-width:24px;text-align:center;}
+.stock-add-in{width:48px;padding:5px 6px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;text-align:center;}
+.stock-add-btn{padding:5px 10px;background:#111;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.stock-add-btn:hover{background:#333;}
+.stock-type-label{font-size:10px;padding:1px 5px;border-radius:4px;margin-left:2px;}
+.filled-lbl{background:#dcfce7;color:#166534;}
+.empty-lbl{background:#fef3c7;color:#92400e;}
+
+/* RESET SECTION */
+.reset-section{margin-top:16px;padding-top:16px;border-top:1px solid #f3f4f6;}
+.reset-title{font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;}
+.reset-btn{width:100%;padding:10px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.reset-btn:hover{background:#b91c1c;}
+.reset-info{font-size:11px;color:#6b7280;margin-top:6px;text-align:center;}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
+.toast.show{opacity:1;}
+.divider{height:1px;background:#f3f4f6;margin:16px 0;}
+
+/* MODAL FOR RESET CONFIRM */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.active{display:flex;}
+.modal{background:#fff;border-radius:12px;padding:2rem;max-width:380px;box-shadow:0 20px 25px rgba(0,0,0,0.15);}
+.modal-title{font-size:16px;font-weight:700;color:#111;margin-bottom:8px;}
+.modal-desc{font-size:13px;color:#6b7280;margin-bottom:1.5rem;line-height:1.5;}
+.modal-actions{display:flex;gap:8px;}
+.modal-cancel{flex:1;padding:10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#111;}
+.modal-cancel:hover{background:#f3f4f6;}
+.modal-confirm{flex:1;padding:10px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.modal-confirm:hover{background:#b91c1c;}
+
+      /* FOOTER */
+.staff-btn-float {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: #f7ca04;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.staff-btn-float:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(237, 168, 19, 0.403);
+}
+
+.staff-btn-float:active {
+  transform: translateY(-1px);
+}
+                .staff-portal-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .staff-portal-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        .staff-portal-btn {
+            bottom: 10px;
+            right: 5px;
+            padding: 2.5px 5px;
+            font-size: 0.8rem;
+        }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+  ✏️  EASY EDIT ZONE
+  ============================================================ -->
+<script>
+
+// ── USERS ─────────────────────────────────────────────────────
+const USERS = [
+  { name:"Alvin",   password:"Alvin123",  role:"employee" },
+  { name:"Ken",     password:"Ken234",    role:"employee" },
+  { name:"Winnie",  password:"Winnie254", role:"employee" },
+  { name:"Tedd",    password:"Tedd254",   role:"owner"    },
+];
+
+// ── CYLINDER PRODUCTS ─────────────────────────────────────────
+const CYLINDERS = [
+  { id:"mgas-6kg",     name:"Men-Gas 6kg"    },
+  { id:"pgas-6kg",     name:"Power-Gas 6kg"    },
+  { id:"nogas-6kg",    name:"National Oil-Gas 6kg"   },
+  { id:"tgas-6kg",     name:"Total-Gas 6kg"    },
+  { id:"kgas-6kg",     name:"K-Gas 6kg"    },
+  { id:"progas-6kg",   name:"Pro Gas 6kg"  },
+  { id:"hashgas-6kg",  name:"Hash Gas 6kg" },
+  { id:"hgas-6kg",     name:"H-Gas 6kg" },
+  { id:"ggas-6kg",     name:"G-Gas 6kg" },
+];
+
+// ── PRICES ────────────────────────────────────────────────────
+const CYL_PRICES = {
+  "mgas-6kg":     { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+  "pgas-6kg":     { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+  "progas-6kg":   { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+  "nogas-6kg":    { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+  "tgas-6kg":     { "Outrights":4000, "Full Set":4500, "Refill":1400 },
+  "kgas-6kg":     { "Outrights":4500, "Full Set":5000, "Refill":1450 },
+  "hashgas-6kg":  { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+  "hgas-6kg":     { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+  "ggas-6kg":     { "Outrights":3500, "Full Set":4000, "Refill":1350 },
+};
+
+// ── ACCESSORIES ───────────────────────────────────────────────
+const BURNER_PRICE = 300;
+const GRILL_PRICE  = 300;
+
+// ── STARTING STOCK ────────────────────────────────────────────
+const START_FILLED = {
+  "mgas-6kg":5,"pgas-6kg":5,"nogas-6kg":5,"tgas-6kg":5,"kgas-6kg":5,
+  "progas-6kg":5,"hashgas-6kg":5,"hgas-6kg":5,"ggas-6kg":5,
+};
+const START_EMPTY = {
+  "mgas-6kg":0,"pgas-6kg":0,"nogas-6kg":0,"tgas-6kg":0,"kgas-6kg":0,
+  "progas-6kg":0,"hashgas-6kg":0,"hgas-6kg":0,"ggas-6kg":0,
+};
+const START_BURNERS = 10;
+const START_GRILLS  = 10;
+
+</script>
+<!-- ============================================================
+  END EASY EDIT ZONE
+  ============================================================ -->
+
+<!-- LOGIN -->
+<div id="login-screen" class="screen active">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="flame">🔥</div>
+      <h1>ULTIMATE FLAME GAS CENTRE</h1>
+      <p>Sales Portal</p>
+    </div>
+    <div class="form-group">
+      <label>Select your name</label>
+      <select id="login-user"></select>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen" class="screen">
+  <div class="app-bar">
+    <div class="app-bar-left">
+      <div class="av" id="av-initials">AL</div>
+      <div class="user-info">
+        <div class="uname" id="bar-name">Alice</div>
+        <div class="urole" id="bar-role">Employee</div>
+        <div class="udate" id="bar-date"></div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Sign out</button>
+  </div>
+
+  <div class="sub-tabs">
+    <button class="stab active" onclick="setTab('Outrights',this)">Outrights</button>
+    <button class="stab" onclick="setTab('Full Set',this)">Full Set</button>
+    <button class="stab" onclick="setTab('Refill',this)">Refill</button>
+  </div>
+
+  <div class="app-body">
+
+    <!-- OWNER: sales totals -->
+    <div id="owner-totals-section" style="display:none;">
+      <div class="owner-totals">
+        <div class="ot-card"><div class="ot-label">Outrights</div><div class="ot-val" id="ot-outrights">KSh 0</div></div>
+        <div class="ot-card"><div class="ot-label">Full Set</div><div class="ot-val" id="ot-fullset">KSh 0</div></div>
+        <div class="ot-card"><div class="ot-label">Refill</div><div class="ot-val" id="ot-refill">KSh 0</div></div>
+      </div>
+      <div class="grand-box">
+        <span class="gl">Grand total — all sales</span>
+        <span class="gv" id="grand-total">KSh 0</span>
+      </div>
+    </div>
+
+    <!-- OWNER: live inventory -->
+    <div id="owner-inv-section" style="display:none;">
+      <div class="inv-section-title">📦 Live Inventory</div>
+      <div class="inv-banner" id="inv-banner"></div>
+      <div class="divider"></div>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="grid-label" id="grid-label">Select cylinder — Outrights</div>
+    <div id="deduct-hint"></div>
+    <div class="prod-grid" id="prod-grid"></div>
+
+    <!-- SALE PANEL -->
+    <div class="sale-panel" id="sale-panel" style="display:none;">
+      <div class="sale-panel-title" id="sale-panel-title"></div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:8px;font-weight:500;">Payment method</div>
+      <div class="payment-row">
+        <button class="pay-btn active" id="pay-cash" onclick="setPayment('Cash')">💵 Cash</button>
+        <button class="pay-btn" id="pay-till" onclick="setPayment('Till')">📲 Till</button>
+      </div>
+      <div class="qty-row">
+        <div class="qty-ctrl">
+          <button class="qbtn" id="qty-minus" onclick="changeQty(-1)">−</button>
+          <span class="qval" id="qty-val">1</span>
+          <button class="qbtn" id="qty-plus" onclick="changeQty(1)">+</button>
+        </div>
+        <div class="line-total">Total: <span id="line-total">KSh 0</span></div>
+      </div>
+      <button class="record-btn" id="record-btn" onclick="recordSale()">✓ Record Sale</button>
+    </div>
+
+    <!-- LOG -->
+    <div class="log-header">
+      <div class="log-title">Sales log — all staff</div>
+    </div>
+    <div id="sales-log"></div>
+
+    <!-- OWNER: add stock -->
+    <div class="add-stock-section" id="add-stock-section" style="display:none;">
+      <div class="add-stock-title">📥 Add stock (restock from factory)</div>
+      <div class="stock-grid" id="stock-grid"></div>
+    </div>
+
+    <!-- OWNER: reset -->
+    <div class="reset-section" id="reset-section" style="display:none;">
+      <div class="reset-title">🔄 Daily reset</div>
+      <button class="reset-btn" onclick="confirmReset()">Clear today's sales & reset stock</button>
+      <div class="reset-info">Auto-resets daily at midnight. Click above to manually reset.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESET MODAL -->
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal">
+    <div class="modal-title">Reset all data?</div>
+    <div class="modal-desc">This will clear all sales from today and reset stock to starting values. This action cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="cancelReset()">Cancel</button>
+      <button class="modal-confirm" onclick="executeReset()">Yes, reset</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+ 
+<!-- FOOTER -->
+ <a href="index.html" class="staff-btn-float">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+  🏠 ← Home Page
+</a>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────
+let currentUser = null;
+let currentTab  = "Outrights";
+let selectedCyl = null;
+let qty         = 1;
+let payment     = "Cash";
+const sales     = [];
+
+// Mutable stock
+const filled  = { ...START_FILLED };
+const empty   = { ...START_EMPTY  };
+let burners   = START_BURNERS;
+let grills    = START_GRILLS;
+
+// Track the date for auto-reset
+let lastResetDate = localStorage.getItem("lastResetDate") || getToday();
+
+// ── DATE HELPERS ──────────────────────────────────────────────
+function getToday(){
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+function fmtDate(d){
+  return d.toLocaleDateString("en-KE",{weekday:"short",day:"2-digit",month:"short",year:"numeric"});
+}
+
+function fmt(n){ return "KSh " + Number(n).toLocaleString("en-KE"); }
+function initials(n){ return n.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2); }
+function fmtDT(d){
+  return d.toLocaleDateString("en-KE",{day:"2-digit",month:"short",year:"numeric"})
+       + " " + d.toLocaleTimeString("en-KE",{hour:"2-digit",minute:"2-digit"});
+}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2400);
+}
+function sc(s){ return s>2?"s-ok":s>0?"s-low":"s-out"; }
+function sl(s){ return s>0?s+" left":"Out of stock"; }
+
+function maxSell(cylId){
+  if(currentTab==="Outrights") return filled[cylId];
+  if(currentTab==="Full Set")  return Math.min(filled[cylId], burners, grills);
+  if(currentTab==="Refill")    return filled[cylId];
+  return 0;
+}
+
+// ── CHECK FOR MIDNIGHT RESET ──────────────────────────────────
+function checkForMidnightReset(){
+  const today = getToday();
+  if(lastResetDate !== today){
+    resetData();
+    lastResetDate = today;
+    localStorage.setItem("lastResetDate", today);
+    toast("🌅 New day! Sales reset. Stock restored to starting values.");
+  }
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────
+function buildLoginSelect(){
+  document.getElementById("login-user").innerHTML =
+    USERS.map((u,i)=>`<option value="${i}">${u.name}</option>`).join("");
+}
+
+function doLogin(){
+  const idx  = parseInt(document.getElementById("login-user").value);
+  const pass = document.getElementById("login-pass").value;
+  const user = USERS[idx];
+  if(user && pass===user.password){
+    currentUser=user;
+    document.getElementById("login-err").textContent="";
+    document.getElementById("login-pass").value="";
+    checkForMidnightReset();
+    launchApp();
+  } else {
+    document.getElementById("login-err").textContent="Incorrect password.";
+  }
+}
+
+function doLogout(){
+  currentUser=null; selectedCyl=null; qty=1; payment="Cash";
+  document.getElementById("sale-panel").style.display="none";
+  document.getElementById("login-screen").classList.add("active");
+  document.getElementById("app-screen").classList.remove("active");
+}
+
+// ── LAUNCH ────────────────────────────────────────────────────
+function launchApp(){
+  document.getElementById("login-screen").classList.remove("active");
+  document.getElementById("app-screen").classList.add("active");
+  document.getElementById("av-initials").textContent=initials(currentUser.name);
+  document.getElementById("bar-name").textContent=currentUser.name;
+  document.getElementById("bar-role").textContent=currentUser.role==="owner"?"Owner":"Employee";
+  document.getElementById("bar-date").textContent=fmtDate(new Date());
+  const own = currentUser.role==="owner";
+  document.getElementById("owner-totals-section").style.display = own?"block":"none";
+  document.getElementById("owner-inv-section").style.display    = own?"block":"none";
+  document.getElementById("add-stock-section").style.display    = own?"block":"none";
+  document.getElementById("reset-section").style.display        = own?"block":"none";
+  setTab("Outrights", document.querySelector(".stab"));
+  if(own){ renderInvBanner(); updateOwnerTotals(); buildStockGrid(); }
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function setTab(tab, el){
+  currentTab=tab; selectedCyl=null; qty=1; payment="Cash";
+  document.querySelectorAll(".stab").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  document.getElementById("grid-label").textContent="Select cylinder — "+tab;
+  document.getElementById("sale-panel").style.display="none";
+  renderDeductHint();
+  buildProductGrid();
+  renderLog();
+}
+
+function renderDeductHint(){
+  const hints = {
+    "Outrights": "📦 <strong>Outright</strong>: gas + cylinder — deducts <strong>1 filled cylinder</strong> per unit sold.",
+    "Full Set":  "📦 <strong>Full Set</strong>: gas + cylinder + burner + grill — deducts <strong>1 filled cylinder + 1 burner + 1 grill</strong>.",
+    "Refill":    "🔄 <strong>Refill</strong>: you fill customer's cylinder & keep the empty — deducts <strong>1 filled</strong>, adds <strong>1 empty cylinder</strong>.",
+  };
+  document.getElementById("deduct-hint").innerHTML =
+    `<div class="deduct-hint">${hints[currentTab]}</div>`;
+}
+
+// ── PRODUCT GRID ──────────────────────────────────────────────
+function buildProductGrid(){
+  const grid = document.getElementById("prod-grid");
+  grid.innerHTML = CYLINDERS.map(c=>{
+    const pr  = CYL_PRICES[c.id][currentTab];
+    const max = maxSell(c.id);
+    const sel = selectedCyl===c.id;
+    const dis = max===0;
+    return `<button class="prod-btn${sel?" sel":""}" onclick="selectCyl('${c.id}')" ${dis?"disabled":""}>
+      <div class="prod-name">${c.name}</div>
+      <div class="prod-price">${fmt(pr)}</div>
+      <span class="prod-stock ${sc(max)}">${sl(max)}</span>
+    </button>`;
+  }).join("");
+}
+
+function selectCyl(id){
+  selectedCyl=id; qty=1; payment="Cash";
+  buildProductGrid();
+  showSalePanel();
+}
+
+// ── SALE PANEL ────────────────────────────────────────────────
+function showSalePanel(){
+  const c  = CYLINDERS.find(x=>x.id===selectedCyl);
+  const pr = CYL_PRICES[selectedCyl][currentTab];
+  const max= maxSell(selectedCyl);
+  document.getElementById("sale-panel").style.display="block";
+  document.getElementById("sale-panel-title").textContent="Selling: "+c.name+" — "+currentTab;
+  document.getElementById("pay-cash").classList.add("active");
+  document.getElementById("pay-till").classList.remove("active");
+  updateQtyDisplay();
+}
+
+function setPayment(type){
+  payment=type;
+  document.getElementById("pay-cash").classList.toggle("active",type==="Cash");
+  document.getElementById("pay-till").classList.toggle("active",type==="Till");
+}
+
+function changeQty(d){
+  const max=maxSell(selectedCyl);
+  qty=Math.max(1,Math.min(max,qty+d));
+  updateQtyDisplay();
+}
+
+function updateQtyDisplay(){
+  const pr  = CYL_PRICES[selectedCyl][currentTab];
+  const max = maxSell(selectedCyl);
+  document.getElementById("qty-val").textContent=qty;
+  document.getElementById("qty-minus").disabled=qty<=1;
+  document.getElementById("qty-plus").disabled=qty>=max;
+  document.getElementById("line-total").textContent=fmt(pr*qty);
+}
+
+// ── RECORD SALE ───────────────────────────────────────────────
+function recordSale(){
+  if(!selectedCyl) return;
+  const c  = CYLINDERS.find(x=>x.id===selectedCyl);
+  const pr = CYL_PRICES[selectedCyl][currentTab];
+  let deductDesc = "";
+
+  if(currentTab==="Outrights"){
+    filled[selectedCyl] -= qty;
+    deductDesc = `−${qty} filled ${c.name}`;
+  }
+  else if(currentTab==="Full Set"){
+    filled[selectedCyl] -= qty;
+    burners -= qty;
+    grills  -= qty;
+    deductDesc = `−${qty} filled ${c.name}, −${qty} burner, −${qty} grill`;
+  }
+  else if(currentTab==="Refill"){
+    filled[selectedCyl] -= qty;
+    empty[selectedCyl]  += qty;
+    deductDesc = `−${qty} filled ${c.name}, +${qty} empty ${c.name}`;
+  }
+
+  sales.unshift({
+    id: Date.now(),
+    employee: currentUser.name,
+    cylId: selectedCyl,
+    cylName: c.name,
+    tab: currentTab,
+    qty,
+    price: pr,
+    total: pr * qty,
+    payment,
+    deductDesc,
+    time: new Date(),
+  });
+
+  toast("Recorded: "+qty+"× "+c.name+" ("+currentTab+")");
+  selectedCyl=null; qty=1; payment="Cash";
+  document.getElementById("sale-panel").style.display="none";
+  buildProductGrid();
+  renderLog();
+  if(currentUser.role==="owner"){ updateOwnerTotals(); renderInvBanner(); buildStockGrid(); }
+}
+
+// ── SALES LOG ─────────────────────────────────────────────────
+function renderLog(){
+  const el = document.getElementById("sales-log");
+  if(!sales.length){
+    el.innerHTML=`<div class="empty-box"><div class="eicon">📋</div>No sales recorded yet.<br>Sales will appear here once a transaction is made.</div>`;
+    return;
+  }
+  const own = currentUser && currentUser.role==="owner";
+  el.innerHTML = sales.map(s=>`
+    <div class="log-item" id="sale-${s.id}">
+      <div class="log-left">
+        <div class="log-main">${s.qty}× ${s.cylName} <span style="color:#6b7280;font-weight:400;">(${s.tab})</span></div>
+        <div class="log-meta">${s.employee} &nbsp;·&nbsp; ${fmtDT(s.time)} &nbsp;·&nbsp;
+          <span class="log-pay ${s.payment==="Cash"?"pay-cash":"pay-till"}">${s.payment}</span>
+        </div>
+        <div class="log-deducted">↓ ${s.deductDesc}</div>
+      </div>
+      <div class="log-right">
+        <div class="log-amount">${fmt(s.total)}</div>
+        ${own?`<button class="del-btn" onclick="deleteSale(${s.id})" title="Delete">✕</button>`:""}
+      </div>
+    </div>`).join("");
+}
+
+function deleteSale(id){
+  if(!confirm("Delete this sale? Stock will be restored.")) return;
+  const idx = sales.findIndex(s=>s.id===id);
+  if(idx===-1) return;
+  const s = sales[idx];
+  if(s.tab==="Outrights"){ filled[s.cylId]+=s.qty; }
+  else if(s.tab==="Full Set"){ filled[s.cylId]+=s.qty; burners+=s.qty; grills+=s.qty; }
+  else if(s.tab==="Refill"){ filled[s.cylId]+=s.qty; empty[s.cylId]-=s.qty; }
+  sales.splice(idx,1);
+  renderLog(); updateOwnerTotals(); renderInvBanner(); buildProductGrid(); buildStockGrid();
+  toast("Sale deleted — stock restored.");
+}
+
+// ── OWNER TOTALS ──────────────────────────────────────────────
+function updateOwnerTotals(){
+  ["Outrights","Full Set","Refill"].forEach((t,i)=>{
+    const ids=["ot-outrights","ot-fullset","ot-refill"];
+    document.getElementById(ids[i]).textContent=
+      fmt(sales.filter(s=>s.tab===t).reduce((a,s)=>a+s.total,0));
+  });
+  document.getElementById("grand-total").textContent=
+    fmt(sales.reduce((a,s)=>a+s.total,0));
+}
+
+// ── LIVE INVENTORY ────────────────────────────────────────────
+function renderInvBanner(){
+  const el = document.getElementById("inv-banner");
+  let html = "";
+  CYLINDERS.forEach(c=>{
+    const f = filled[c.id];
+    const e = empty[c.id];
+    html += `<div class="inv-card">
+      <div class="inv-card-label">${c.name}</div>
+      <div class="inv-card-row"><span class="iv-key">Filled</span><span class="iv-val ${sc(f)}" style="padding:1px 6px;border-radius:20px;">${f}</span></div>
+      <div class="inv-card-row"><span class="iv-key">Empty</span><span class="iv-empty">${e}</span></div>
+    </div>`;
+  });
+  html += `<div class="inv-card">
+    <div class="inv-card-label">Accessories</div>
+    <div class="inv-card-row"><span class="iv-key">Burners</span><span class="iv-val ${sc(burners)}" style="padding:1px 6px;border-radius:20px;">${burners}</span></div>
+    <div class="inv-card-row"><span class="iv-key">Grills</span><span class="iv-val ${sc(grills)}" style="padding:1px 6px;border-radius:20px;">${grills}</span></div>
+  </div>`;
+  el.innerHTML = html;
+}
+
+// ── ADD STOCK ─────────────────────────────────────────────────
+function buildStockGrid(){
+  const grid = document.getElementById("stock-grid");
+  let html = "";
+  CYLINDERS.forEach(c=>{
+    html += `<div class="stock-item">
+      <span class="stock-item-name">${c.name} <span class="stock-type-label filled-lbl">filled</span></span>
+      <span class="stock-cur ${sc(filled[c.id])}">${filled[c.id]}</span>
+      <input class="stock-add-in" type="number" min="1" value="1" id="sadd-f-${c.id}"/>
+      <button class="stock-add-btn" onclick="addStock('filled','${c.id}')">+ Add</button>
+    </div>`;
+  });
+  CYLINDERS.forEach(c=>{
+    html += `<div class="stock-item">
+      <span class="stock-item-name">${c.name} <span class="stock-type-label empty-lbl">empty</span></span>
+      <span class="stock-cur" style="color:#d97706;">${empty[c.id]}</span>
+      <input class="stock-add-in" type="number" min="1" value="1" id="sadd-e-${c.id}"/>
+      <button class="stock-add-btn" onclick="addStock('empty','${c.id}')">+ Add</button>
+    </div>`;
+  });
+  html += `
+    <div class="stock-item">
+      <span class="stock-item-name">Burners</span>
+      <span class="stock-cur ${sc(burners)}">${burners}</span>
+      <input class="stock-add-in" type="number" min="1" value="1" id="sadd-burner"/>
+      <button class="stock-add-btn" onclick="addStock('burner')">+ Add</button>
+    </div>
+    <div class="stock-item">
+      <span class="stock-item-name">Grills</span>
+      <span class="stock-cur ${sc(grills)}">${grills}</span>
+      <input class="stock-add-in" type="number" min="1" value="1" id="sadd-grill"/>
+      <button class="stock-add-btn" onclick="addStock('grill')">+ Add</button>
+    </div>`;
+  grid.innerHTML = html;
+}
+
+function addStock(type, cylId){
+  let n, inputEl;
+  if(type==="filled"){ inputEl=document.getElementById("sadd-f-"+cylId); n=parseInt(inputEl.value); if(n>0){filled[cylId]+=n; inputEl.value=1;} }
+  else if(type==="empty"){ inputEl=document.getElementById("sadd-e-"+cylId); n=parseInt(inputEl.value); if(n>0){empty[cylId]+=n; inputEl.value=1;} }
+  else if(type==="burner"){ inputEl=document.getElementById("sadd-burner"); n=parseInt(inputEl.value); if(n>0){burners+=n; inputEl.value=1;} }
+  else if(type==="grill"){ inputEl=document.getElementById("sadd-grill"); n=parseInt(inputEl.value); if(n>0){grills+=n; inputEl.value=1;} }
+  if(!n||n<1){ toast("Enter a valid quantity."); return; }
+  const label = type==="filled"||type==="empty" ? CYLINDERS.find(c=>c.id===cylId).name+" ("+type+")" : type;
+  toast("Added "+n+" × "+label);
+  buildProductGrid(); renderInvBanner(); buildStockGrid();
+}
+
+// ── RESET ─────────────────────────────────────────────────────
+function confirmReset(){
+  document.getElementById("reset-modal").classList.add("active");
+}
+
+function cancelReset(){
+  document.getElementById("reset-modal").classList.remove("active");
+}
+
+function executeReset(){
+  document.getElementById("reset-modal").classList.remove("active");
+  resetData();
+  lastResetDate = getToday();
+  localStorage.setItem("lastResetDate", lastResetDate);
+  toast("✓ All data reset. Sales cleared, stock restored.");
+  renderLog(); updateOwnerTotals(); renderInvBanner(); buildProductGrid(); buildStockGrid();
+}
+
+function resetData(){
+  sales.length = 0;
+  Object.keys(filled).forEach(k=>filled[k]=START_FILLED[k]);
+  Object.keys(empty).forEach(k=>empty[k]=START_EMPTY[k]);
+  burners = START_BURNERS;
+  grills  = START_GRILLS;
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+buildLoginSelect();
+
+// Check for reset every 5 seconds if user is logged in
+setInterval(()=>{
+  if(currentUser) checkForMidnightReset();
+}, 5000);
+</script>
+</body>
+</html>

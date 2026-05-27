@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Business Categories Slideshow - Research Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  html, body 
+  body 
+{
+    margin: 0; /* Adds space around the entire page */
+    padding: 0; /* Padding inside body */
+    height: fit-content;
+    font-family: 'Bookman Old Style', sans-serif;
+    background: linear-gradient(135deg, #1f4037, #99f2c8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    color: #222;
+    max-width: 1200px; /*Max width for comfortable reading line length*/
+    line-height: 1.6;
+    box-sizing: border-box;
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin-top: 20px;
+      font-family: Bookman Old Style, sans-serif;
+    }
+
+    h2 {
+    text-align: center;
+      font-size: 1.5rem;
+      margin-top: 2x;
+      font-family: Bookman Old Style, sans-serif;
+    }
+  
+
+  .slideshow-container {
+    position: relative;
+    width: 90vw;
+    max-width: 1200px;
+    height: 600px;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    padding: 10px 10px;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #e0f7fa, #80deea);
+    border-radius: 24px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 1s;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+  }
+
+  .slide h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 2.0rem;
+    color: #00796b;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  .cards {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .card {
+    background: #ffffffcc;
+    border-radius: 18px;
+    padding: 22px 18px;
+    width: 120px;
+    height: 90px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #004d40;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 28px rgba(0, 77, 64, 0.35);
+  }
+
+  .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 3px rgba(0,0,0,0.15));
+  }
+
+  /* Controls */
+  .nav-buttons {
+    margin-top: auto;
+    background: #00796b;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    border-radius: 0 0 24px 24px;
+  }
+
+  .nav-buttons button {
+    background: #004d40;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 8px 20px;
+    margin: 0 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-buttons button:hover {
+    background: #00251a;
+  }
+
+  /* Responsive */
+  @media (max-width: 740px) {
+    .cards {
+      gap: 15px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      font-size: 0.95rem;
+    }
+    .icon {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+    .slide h2 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .slide {
+      padding: 30px 15px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      font-size: 0.85rem;
+    }
+    .icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+  }
+          /* Side Menu Styles */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-btn div {
+            height: 5px;
+            background-color: #fff;
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 70%;
+            background-color: #234567;
+            padding-top: 0px;
+            box-sizing: border-box;
+            box-shadow: 3px 0 8px rgba(0,0,0,0.2);
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0 20px;
+            margin: 0;
+        }
+
+        .menu-item {
+            background-color: #2e4a7e;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .menu-item-header {
+            padding: 14px 20px;
+            color: #fff;
+            font-weight: bold;
+            user-select: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .arrow {
+            border: solid rgb(255, 255, 255);
+            border-width: 0 3.5px 3.5px 0;
+            display: inline-block;
+            padding: 5px;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow.down {
+            transform: rotate(135deg);
+        }
+
+        .arrow.right {
+            transform: rotate(45deg);
+        }
+
+        .menu-item-content {
+            max-height: 0;
+            overflow: hidden;
+            background-color: #5c7eb2;
+            color: #f0f0f0;
+            padding: 0 20px;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .menu-item-content.open {
+            padding: 15px 20px;
+            max-height: 400px; /* max height large enough */
+        }
+
+     .center-link {
+      text-align: center; /* centers inline elements inside */
+      margin: 20px;
+    }
+    a {
+      font-size: 18px;
+      color: rgb(247, 247, 247);
+      text-decoration:dotted;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    }
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem 0;
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1 rem 0;
+    }
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #007bff;
+    }
+    nav ul {
+      list-style: none;
+      display: inline;
+      margin: 0;
+      padding: 0;
+      gap: 0.1 rem;
+    }
+    nav ul li a {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.25rem 0.5rem;
+    }
+    nav ul li a:hover {
+      border-bottom: 2px solid #007bff;
+    }
+    /* Hero */
+    .hero {
+      background: linear-gradient(0deg, #00000000 0%, #00000000 0%);
+      color: rgb(0, 0, 0);
+      padding: 1rem 1rem 1rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 1200;
+      letter-spacing: 0.2px;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.9;
+    }
+    .btn-primary {
+      background-color: #004a99;
+      color: white;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 74, 153, 0.4);
+    }
+    .btn-primary:hover, .btn-primary:focus {
+      background-color: #0066cc;
+      outline:none;
+      box-shadow: 0 6px 12px rgba(0, 102, 204, 0.6);
+    }
+    /* Sections */
+    section {
+      padding: 4rem 1rem;
+      background-color: white;
+      margin: 2rem 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #007bff;
+      font-weight: 900;
+    }
+    /* About */
+    .about p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.125rem;
+      color: #555;
+      line-height: 1.8;
+    }
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .feature {
+      background: #f0faff;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .feature:hover, .feature:focus-within {
+      transform: translateY(-8px);
+      box-shadow: 0 6px 20px rgba(0,123,255,0.3);
+      outline:none;
+    }
+    .feature-icon {
+      font-size: 3rem;
+      color: #007bff;
+      margin-bottom: 1rem;
+    }
+    .feature h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      color: #004a99;
+      font-weight: 700;
+    }
+    .feature p {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    /* Contact */
+    .contact form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .contact label {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #333;
+    }
+    .contact input[type="text"],
+    .contact input[type="email"],
+    .contact textarea {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      transition: border-color 0.3s ease;
+      resize: vertical;
+    }
+    .contact input[type="text"]:focus,
+    .contact input[type="email"]:focus,
+    .contact textarea:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+    .contact textarea {
+      min-height: 120px;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero h1 { 
+        font-size: 2.25rem;
+      }
+      nav ul {
+        gap: 1rem;
+      }
+    }
+
+         
+  
+</style>
+</head>
+<body>
+    <body>
+  <header>
+    <div class="container">
+      <nav role="navigation" aria-label="Primary navigation">
+        <h1>RESEARCH HUB</h1>
+        <ul> 
+        <li><a href="coverpage.html">TVET & CDACC BUSINESS PLANS AND PROJECTS</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" role="banner">
+      <h1>Welcome to RESEARCH HUB</h1>
+      <p>Your one stop for awesome Business Plan and Project Samples.</p>
+      <a href="tvet.html"Click here to open Business Plan and Projects Page button class="btn-primary" onclick="document.getElementById('TVET BUSINESS PLANS AND PROJECTS').scrollIntoView({behavior:'smooth'})">Click here to open Business Plan and Projects Page</button></a>
+    </section>
+    
+        <div class="menu-btn" id="menuBtn" aria-label="Toggle menu" role="button" tabindex="0">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <nav class="side-menu" id="sideMenu" aria-label="Main menu">
+        <ul class="menu-list">
+            <li class="menu-item">
+                <div class="menu-item-header" tabindex="0" aria-expanded="false">
+                    <a href="attachment reports">ATTACHMENT REPORTS</a>
+                    <span class="arrow right"></span>
+                </div>
+                <div class="menu-item-content">
+                    <p>This is the content of menu item 1. It opens and others collapse.</p>
+                </div>
+            </li>
+            <li class="menu-item">
+                <div class="menu-item-header" tabindex="0" aria-expanded="false">
+                    <a href="business plan notes.html"> BUSINESS PLAN NOTES></a>
+                    <span class="arrow right"></span>
+                </div>
+                <div class="menu-item-content">
+                    <p>Content for menu item 2.</p>
+                </div>
+            </li>
+            <li class="menu-item">
+                <div class="menu-item-header" tabindex="0" aria-expanded="false">
+                    <a href="tvet.html">BUSINESS PLANS AND RESEARCH PROJECTS></a>
+                    <span class="arrow right"></span>
+                </div>
+                <div class="menu-item-content">
+                    <p>Content for menu item 3.</p>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+  <div class="slideshow-container" aria-label="Business categories slideshow">
+    <!-- Slide 1 -->
+    <section class="slide active" aria-live="polite" aria-atomic="true" aria-label="Slide 1 - Shops and Services">
+      <h2>Shops & Services</h2>
+      <div class="cards">
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">⚡</div>Electrical Shop</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🛒</div>Supermarket</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🚕</div>Taxi</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🏗️</div>Building & Construction</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🌾</div>Agrovet</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">👗</div>Fashion & Design</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🪚</div>Carpentry</div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide" aria-live="polite" aria-atomic="true" aria-label="Slide 2 - Hospitality and Personal Care">
+      <h2>Hospitality & Care</h2>
+      <div class="cards">
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🏨</div>Hotel & Spa</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">💈</div>Kinyozi & Spa</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🛒</div>Grocery Shop</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">☕</div>Cyber Cafe</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🍔</div>Food Delivery</div>
+      </div>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide" aria-live="polite" aria-atomic="true" aria-label="Slide 3 - Transport & Services">
+      <h2>Transport & Services</h2>
+      <div class="cards">
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🚗</div>Car Lift</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">⛽</div>Filling Station</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🔧</div>Hardware</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🚘</div>Uber</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🚀</div>Fast Foods</div>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide" aria-live="polite" aria-atomic="true" aria-label="Slide 4 - Entertainment & Farming">
+      <h2>Entertainment & Farming</h2>
+      <div class="cards">
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🎉</div>Night Club</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🐔</div>Poultry Farming</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">💰</div>M-Pesa Super Agent</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">🏭</div>Garage</div>
+        <div class="card" tabindex="0"><div class="icon" aria-hidden="true">⚙️</div>Auto Spares</div>
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="nav-buttons" aria-label="Slideshow navigation">
+      <button id="prevBtn" aria-label="Previous Slide">&#10094;</button>
+      <button id="nextBtn" aria-label="Next Slide">&#10095;</button>
+    </nav>
+  </div>
+  </div>
+
+      <section class="features" id="features" tabindex="-1">
+      <div class="container">
+        <h2>Our Features</h2>
+        <div class="features">
+          <article class="feature" tabindex="0" aria-label="Responsive Design">
+            <div class="feature-icon">📱</div>
+            <h3>Business Plan Write-up</h3>
+            <p>Get detailed notes about business plan writing..</p>
+          </article>
+          <article class="feature" tabindex="0" aria-label="Fast Performance">
+            <div class="feature-icon">⚡</div>
+            <h3>PROJECTS</h3>
+            <p>Get Project notes to guide you through your writing.</p>
+          </article>
+          <article class="feature" tabindex="0" aria-label="SEO Optimization">
+            <div class="feature-icon">🔍</div>
+            <h3>SEO Optimization</h3>
+            <p>We implement best practices to improve your search engine rankings and help customers find your business with ease.</p>
+          </article>
+          <article class="feature" tabindex="0" aria-label="Customizable">
+            <img src="https://tech4serve.ae/wp-content/uploads/2022/06/More-Services.jpg" width="200" height="50"</div>
+            <h3>Other Services</h3>
+            <a href="Other services"> Click here</a>
+            <p>Helb Application, KRA PIN application and email Change, E-Citizen Services, Computer maintenance & repair. If you find any difficulties in the above mentioned services feel free to contact us.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about" tabindex="-1">
+      <div class="container">
+        <h2>About Us</h2>
+        <p>Welcome to Research Hub. We are passionate about writing Attachment Reports, Business Plans and Project Samples. we also provide notes on the same to help you not to miss Important aspects during write-ups. To contact us hit the button below</p>
+        <a href="contact.html" style="text-align: center;"><b>Contact Us</b></a>
+          
+      </div>
+    </section>
+
+    <section class="contact" id="contact" tabindex="-1" aria-label="Contact form">
+      <div class="container">
+        <h2>FEEDBACK</h2>
+        <form onsubmit="event.preventDefault(); alert('Thank you for reaching out!'); this.reset();">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your full name" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Write your message here. Tell us what you would like us to improve so that we serve you better. Thank you..." required></textarea>
+
+          <button class="btn-primary" type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+    
+  </main>
+
+  <footer>
+    &copy; 2025 RESEARCH HUB. All rights reserved.
+  </footer>
+
+</body>
+</head>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const headers = sideMenu.querySelectorAll('.menu-item-header');
+
+        // Toggle side menu visibility
+        menuBtn.addEventListener('click', () => {
+            sideMenu.classList.toggle('open');
+        });
+
+        // Accordion functionality: toggle first clicked item and collapse others
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                headers.forEach(h => {
+                    const content = h.nextElementSibling;
+                    if (h === header) {
+                        const isOpen = content.classList.contains('open');
+                        if (isOpen) {
+                            content.classList.remove('open');
+                            h.setAttribute('aria-expanded', 'false');
+                        } else {
+                            content.classList.add('open');
+                            h.setAttribute('aria-expanded', 'true');
+                        }
+                    } else {
+                        content.classList.remove('open');
+                        h.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        });
+
+  (function(){
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentSlide = 0;
+    let slideInterval = null;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        if(i === index) {
+          slide.classList.add('active');
+          slide.setAttribute('aria-hidden', 'false');
+        } else {
+          slide.classList.remove('active');
+          slide.setAttribute('aria-hidden', 'true');
+        }
+      });
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      let next = currentSlide + 1;
+      if(next >= slides.length) next = 0;
+      showSlide(next);
+    }
+
+    function prevSlide() {
+      let prev = currentSlide -1;
+      if(prev < 0) prev = slides.length - 1;
+      showSlide(prev);
+    }
+
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetInterval();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetInterval();
+    });
+
+    function startInterval() {
+      slideInterval = setInterval(nextSlide, 20000);
+    }
+
+    function resetInterval() {
+      clearInterval(slideInterval);
+      startInterval();
+    }
+
+    // Initialize
+    showSlide(currentSlide);
+    startInterval();
+  })();
+</script>
+</body>
+</html>
+

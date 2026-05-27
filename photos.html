@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Upload & Download Documents</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #374151;
+      --subtext-color: #6b7280;
+      --accent-color: #111827;
+      --card-bg: #f9fafb;
+      --border-radius: 0.75rem;
+      --shadow: rgba(0,0,0,0.05) 0px 2px 8px;
+      --max-width: 720px;
+      --transition-duration: 0.25s;
+      --button-bg: #111827;
+      --button-hover-bg: #374151;
+      --input-border: #d1d5db;
+      --input-focus-border: #4f46e5;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    main {
+      width: 100%;
+      max-width: var(--max-width);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-color);
+      text-align: center;
+    }
+    p.description {
+      font-size: 1.125rem;
+      color: var(--subtext-color);
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 2rem;
+    }
+    form.upload-form {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label {
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: 1rem;
+      user-select: none;
+    }
+    input[type="file"] {
+      border: 1px solid var(--input-border);
+      border-radius: var(--border-radius);
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: var(--text-color);
+      transition: border-color var(--transition-duration);
+    }
+    input[type="file"]:focus {
+      outline: none;
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+    }
+    button.upload-btn {
+      background: var(--button-bg);
+      color: white;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background-color var(--transition-duration);
+    }
+    button.upload-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    button.upload-btn:hover:not(:disabled),
+    button.upload-btn:focus:not(:disabled) {
+      background: var(--button-hover-bg);
+      outline: none;
+    }
+    .documents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .doc-item {
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: 1.125rem;
+      word-break: break-word;
+    }
+    .doc-link {
+      color: var(--button-bg);
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: var(--border-radius);
+      padding: 0.5rem 1rem;
+      background: var(--button-bg);
+      white-space: nowrap;
+      transition: background-color 0.3s ease;
+    }
+    .doc-link:hover,
+    .doc-link:focus {
+      background: var(--button-hover-bg);
+      outline: none;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Upload Documents</h1>
+    <p class="description">Select documents to upload and get links to download them directly.</p>
+    <form class="upload-form" aria-live="polite" aria-relevant="additions" aria-atomic="true">
+      <label for="fileInput">Choose document files</label>
+      <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt,.xls,.xlsx" />
+      <button class="upload-btn" type="submit" disabled>Upload and Get Download Links</button>
+    </form>
+
+    <section aria-label="Uploaded Documents List">
+      <div class="documents-list" id="documentsList" role="list"></div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const fileInput = document.getElementById('fileInput');
+      const uploadForm = document.querySelector('.upload-form');
+      const uploadBtn = uploadForm.querySelector('button.upload-btn');
+      const docsList = document.getElementById('documentsList');
+
+      // Enable button only if files chosen
+      fileInput.addEventListener('change', () => {
+        uploadBtn.disabled = !fileInput.files.length;
+      });
+
+      uploadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!fileInput.files.length) return;
+
+        // Clear previous list
+        docsList.innerHTML = '';
+
+        const files = Array.from(fileInput.files);
+
+        files.forEach(file => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            // Create a downloadable link with the loaded data url
+            const link = document.createElement('a');
+            link.href = reader.result;
+            link.download = file.name;
+            link.textContent = file.name;
+            link.className = 'doc-link';
+            link.setAttribute('role', 'link');
+            link.setAttribute('aria-label', `Download ${file.name}`);
+
+            const container = document.createElement('div');
+            container.className = 'doc-item';
+            container.appendChild(document.createTextNode(file.name));
+            container.appendChild(link);
+
+            docsList.appendChild(container);
+          };
+          reader.readAsDataURL(file);
+        });
+
+        // Reset input and disable button again
+        fileInput.value = '';
+        uploadBtn.disabled = true;
+      });
+    })();
+  </script>
+</body>
+</html>

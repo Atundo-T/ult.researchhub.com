@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Business Plans & Projects Portal</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+  }
+  
+  .video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+  
+  .background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(17, 24, 39, 0.8) 0%,
+      rgba(75, 85, 99, 0.7) 25%,
+      rgba(17, 24, 39, 0.8) 50%,
+      rgba(30, 41, 59, 0.7) 75%,
+      rgba(17, 24, 39, 0.8) 100%
+    );
+    z-index: -1;
+  }
+  
+  .animated-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: float 8s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-100px) rotate(180deg);
+      opacity: 0.8;
+    }
+  }
+  
+  .container {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 
+      0 25px 50px rgba(0,0,0,0.3),
+      0 0 0 1px rgba(255,255,255,0.05),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    text-align: left;
+    animation: fadeInUp 0.8s ease-out;
+    position: relative;
+    z-index: 1;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  h1 {
+    margin-bottom: 2rem;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    text-align: center;
+    background: linear-gradient(45deg, #fff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .home-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  .home-link:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  
+  #clickHereBtn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(238, 90, 36, 0.3);
+    transition: all 0.3s ease;
+    user-select: none;
+    width: 100%;
+    text-align: center;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  #clickHereBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  #clickHereBtn:hover::before {
+    left: 100%;
+  }
+  
+  #clickHereBtn:hover, #clickHereBtn:focus {
+    background: linear-gradient(45deg, #ff5252, #d63031);
+    outline: none;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(238, 90, 36, 0.4);
+  }
+  
+  #clickHereBtn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(238, 90, 36, 0.3);
+  }
+  
+  #clickHereBtn .icon {
+    display: inline-block;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  #clickHereBtn[aria-expanded="true"] .icon {
+    transform: rotate(180deg);
+  }
+  
+  #linksContainer {
+    margin-top: 1.5rem;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+  }
+  
+  #linksContainer.show {
+    max-height: 1200px;
+    opacity: 1;
+  }
+  
+  .link-item {
+    margin: 0.8rem 0;
+  }
+  
+  .toggle-link {
+    background: rgba(255,255,255,0.12);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+    text-align: left;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .toggle-link::after {
+    content: '▶';
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    opacity: 0.7;
+  }
+  
+  .toggle-link[aria-expanded="true"]::after {
+    transform: rotate(90deg);
+  }
+  
+  .toggle-link:hover, .toggle-link:focus {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    outline: none;
+    transform: translateX(4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    border-color: rgba(255,255,255,0.3);
+  }
+  
+  .simple-link {
+    display: block;
+    margin: 0.4rem 0;
+    padding: 0.7rem 1.2rem;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: #e8e8e8;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .simple-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(45deg, #74b9ff, #0984e3);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .simple-link:hover::before {
+    transform: scaleY(1);
+  }
+  
+  .simple-link:hover, .simple-link:focus {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transform: translateX(8px);
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border-color: rgba(255,255,255,0.2);
+  }
+  
+  .nested-links {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(255,255,255,0.1);
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  .error-message {
+    background: rgba(255, 71, 87, 0.2);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #ffcdd2;
+    display: none;
+  }
+  
+  /* Focus indicators for better accessibility */
+  *:focus {
+    outline: 2px solid rgba(255,255,255,0.5);
+    outline-offset: 2px;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 480px) {
+    .container {
+      padding: 1.5rem;
+      margin: 0.5rem;
+    }
+    
+    .nested-links {
+      margin-left: 0.5rem;
+      padding-left: 0.5rem;
+    }
+    
+    .simple-link {
+      margin-left: 0.5rem;
+    }
+  }
+  
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .container {
+      background: rgba(0,0,0,0.9);
+      border: 2px solid #fff;
+    }
+    
+    .toggle-link, .simple-link {
+      border: 1px solid #fff;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Dynamic Video Background -->
+  <div class="video-background">
+    <video autoplay muted loop>
+      <source src="https://cdn.pixabay.com/vimeo/279468083/business-14205.mp4?width=1920&hash=2c3c1e6fbb4c4b59fb8b2cddcbfa7e3c6f7c5d5c" type="video/mp4">
+      <source src="https://cdn.pixabay.com/vimeo/279468083/business-14205.webm?width=1920&hash=2c3c1e6fbb4c4b59fb8b2cddcbfa7e3c6f7c5d5c" type="video/webm">
+      <!-- Fallback to static image if video fails -->
+      <img src="https://images.unsplash.com/photo-1556155092-8707de31f9c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Modern office background" style="width: 100%; height: 100%; object-fit: cover;">
+    </video>
+  </div>
+  
+  <!-- Background Overlay -->
+  <div class="background-overlay"></div>
+  
+  <!-- Animated Particles -->
+  <div class="animated-particles" id="particles"></div>
+  
+  <div class="container" role="main" aria-label="Business Plans and Projects Portal">
+    <h1>Business Plans & Project Samples</h1>
+    
+    <a href="index.html" class="home-link" aria-label="Return to home page">
+      ← Back to Home
+    </a>
+    
+    <button id="clickHereBtn" aria-expanded="false" aria-controls="linksContainer" aria-label="Toggle main navigation menu">
+      EXPLORE RESOURCES
+      <span class="icon">▼</span>
+    </button>
+    
+    <div class="error-message" id="errorMessage" role="alert" aria-live="polite">
+      Something went wrong. Please try again.
+    </div>
+    
+    <div id="linksContainer" hidden aria-label="Main navigation content">
+      <!-- Business Plans -->
+      <div class="link-item">
+        <button class="toggle-link" id="businessPlansBtn" aria-expanded="false" aria-controls="businessDeptLinks" aria-label="Toggle Business Plans section">
+          📊 Business Plans
+        </button>
+        <div id="businessDeptLinks" class="nested-links" hidden>
+          <!-- Business Department -->
+          <div class="link-item">
+            <button class="toggle-link" id="businessDeptBtn1" aria-expanded="false" aria-controls="businessDeptSubLinks1" aria-label="Toggle Business Department plans">
+              🏢 Business Department
+            </button>
+            <div id="businessDeptSubLinks1" hidden>
+              <a href="https://example.com/business-dept/plan1" target="_blank" rel="noopener noreferrer" class="simple-link" aria-label="View Business Plan 1">
+                Strategic Business Plan Template
+              </a>
+              <a href="https://example.com/business-dept/plan2" target="_blank" rel="noopener noreferrer" class="simple-link" aria-label="View Business Plan 2">
+                Marketing & Sales Strategy Plan
+              </a>
+            </div>
+          </div>
+          <!-- Technical Department -->
+          <div class="link-item">
+            <button class="toggle-link" id="technicalDeptBtn1" aria-expanded="false" aria-controls="technicalDeptSubLinks1" aria-label="Toggle Technical Department plans">
+              ⚙️ Technical Department
+            </button>
+            <div id="technicalDeptSubLinks1" hidden>
+              <a href="electrical-department.html" class="simple-link" aria-label="View Electrical and Electronics Engineering plans">
+                1. Electrical & Electronics Engineering
+              </a>
+              <a href="mechanical-automotive.html" class="simple-link" aria-label="View Mechanical and Automotive Engineering plans">
+                2. Mechanical & Automotive Engineering
+              </a>
+              <a href="building-civil.html" class="simple-link" aria-label="View Building and Civil Engineering plans">
+                3. Building & Civil Engineering
+              </a>
+              <a href="agriculture.html" class="simple-link" aria-label="View Agricultural Extension Engineering plans">
+                4. Agricultural Extension Engineering
+              </a>
+              <a href="science-laboratory.html" class="simple-link" aria-label="View Science Laboratory plans">
+                5. Science Laboratory Technology
+              </a>
+              <a href="applied-health-sciences.html" class="simple-link" aria-label="View Applied and Health Sciences plans">
+                6. Applied & Health Sciences
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Projects -->
+      <div class="link-item">
+        <button class="toggle-link" id="projectsBtn" aria-expanded="false" aria-controls="projectsDeptLinks" aria-label="Toggle Projects section">
+          🚀 Projects
+        </button>
+        <div id="projectsDeptLinks" class="nested-links" hidden>
+          <!-- Business Department -->
+          <div class="link-item">
+            <button class="toggle-link" id="businessDeptBtn2" aria-expanded="false" aria-controls="businessDeptSubLinks2" aria-label="Toggle Business Department projects">
+              💼 Business Department
+            </button>
+            <div id="businessDeptSubLinks2" hidden>
+              <a href="https://example.com/business-projects/project1" target="_blank" rel="noopener noreferrer" class="simple-link" aria-label="View Business Project 1">
+                Digital Transformation Initiative
+              </a>
+              <a href="https://example.com/business-projects/project2" target="_blank" rel="noopener noreferrer" class="simple-link" aria-label="View Business Project 2">
+                Customer Experience Enhancement
+              </a>
+            </div>
+          </div>
+          <!-- Technical Department -->
+          <div class="link-item">
+            <button class="toggle-link" id="technicalDeptBtn2" aria-expanded="false" aria-controls="technicalDeptSubLinks2" aria-label="Toggle Technical Department projects">
+              🔧 Technical Department
+            </button>
+            <div id="technicalDeptSubLinks2" hidden>
+              <a href="https://example.com/technical-projects/projectA" target="_blank" rel="noopener noreferrer" class="simple-link" aria-label="View Technical Project A">
+                IoT Infrastructure Development
+              </a>
+              <a href="https://example.com/technical-projects/projectB" target="_blank" rel="noopener noreferrer" class="simple-link" aria-label="View Technical Project B">
+                Sustainable Energy Solutions
+              </a>
+              <a href="tvet.html" class="simple-link" aria-label="Return to TVET main page">
+                ← Back to TVET Main Page
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Enhanced toggle functionality with better error handling and animations
+  class ToggleManager {
+    constructor() {
+      this.activeToggles = new Set();
+      this.init();
+    }
+    
+    init() {
+      this.setupMainToggle();
+      this.setupNestedToggles();
+      this.addKeyboardSupport();
+    }
+    
+    setupMainToggle() {
+      const clickHereBtn = document.getElementById('clickHereBtn');
+      const linksContainer = document.getElementById('linksContainer');
+      
+      if (!clickHereBtn || !linksContainer) {
+        this.showError('Main toggle elements not found');
+        return;
+      }
+      
+      clickHereBtn.addEventListener('click', () => {
+        this.toggleMainContainer(clickHereBtn, linksContainer);
+      });
+    }
+    
+    toggleMainContainer(button, container) {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      
+      if (expanded) {
+        button.setAttribute('aria-expanded', 'false');
+        container.classList.remove('show');
+        setTimeout(() => { 
+          container.hidden = true; 
+        }, 500);
+      } else {
+        button.setAttribute('aria-expanded', 'true');
+        container.hidden = false;
+        // Trigger reflow for smooth animation
+        container.offsetHeight;
+        container.classList.add('show');
+      }
+    }
+    
+    setupNestedToggles() {
+      const togglePairs = [
+        ['businessPlansBtn', 'businessDeptLinks'],
+        ['businessDeptBtn1', 'businessDeptSubLinks1'],
+        ['technicalDeptBtn1', 'technicalDeptSubLinks1'],
+        ['projectsBtn', 'projectsDeptLinks'],
+        ['businessDeptBtn2', 'businessDeptSubLinks2'],
+        ['technicalDeptBtn2', 'technicalDeptSubLinks2']
+      ];
+      
+      togglePairs.forEach(([buttonId, contentId]) => {
+        this.setupToggle(buttonId, contentId);
+      });
+    }
+    
+    setupToggle(buttonId, contentId) {
+      const btn = document.getElementById(buttonId);
+      const content = document.getElementById(contentId);
+      
+      if (!btn || !content) {
+        console.warn(`Toggle elements not found: ${buttonId}, ${contentId}`);
+        return;
+      }
+      
+      btn.addEventListener('click', () => {
+        this.handleToggle(btn, content, buttonId);
+      });
+    }
+    
+    handleToggle(button, content, buttonId) {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      
+      try {
+        if (expanded) {
+          button.setAttribute('aria-expanded', 'false');
+          content.hidden = true;
+          this.activeToggles.delete(buttonId);
+        } else {
+          button.setAttribute('aria-expanded', 'true');
+          content.hidden = false;
+          this.activeToggles.add(buttonId);
+        }
+      } catch (error) {
+        this.showError('Error toggling content');
+        console.error('Toggle error:', error);
+      }
+    }
+    
+    addKeyboardSupport() {
+      document.addEventListener('keydown', (e) => {
+        // Close all toggles with Escape key
+        if (e.key === 'Escape') {
+          this.closeAllToggles();
+        }
+      });
+    }
+    
+    closeAllToggles() {
+      const mainBtn = document.getElementById('clickHereBtn');
+      const mainContainer = document.getElementById('linksContainer');
+      
+      if (mainBtn.getAttribute('aria-expanded') === 'true') {
+        this.toggleMainContainer(mainBtn, mainContainer);
+      }
+      
+      this.activeToggles.forEach(buttonId => {
+        const btn = document.getElementById(buttonId);
+        if (btn && btn.getAttribute('aria-expanded') === 'true') {
+          btn.click();
+        }
+      });
+    }
+    
+    showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        setTimeout(() => {
+          errorElement.style.display = 'none';
+        }, 3000);
+      }
+    }
+  }
+  
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new ToggleManager();
+    createParticles();
+    setupVideoFallback();
+  });
+  
+  // Create animated particles
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 30;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  }
+  
+  // Setup video background fallback
+  function setupVideoFallback() {
+    const video = document.querySelector('.video-background video');
+    const fallbackImage = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';
+    
+    video.addEventListener('error', () => {
+      // If video fails to load, use a high-quality background image
+      document.querySelector('.video-background').innerHTML = `
+        <div style="
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                      url('${fallbackImage}');
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+        "></div>
+      `;
+    });
+    
+    // Alternative backgrounds that cycle
+    const backgrounds = [
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Modern office
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Office meeting
+      'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', // Business workspace
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'  // Laptop and documents
+    ];
+    
+    // Change background every 30 seconds if using static images
+    if (!video.canPlayType || video.canPlayType('video/mp4') === '') {
+      let currentBg = 0;
+      setInterval(() => {
+        currentBg = (currentBg + 1) % backgrounds.length;
+        document.querySelector('.video-background').style.backgroundImage = 
+          `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${backgrounds[currentBg]}')`;
+      }, 30000);
+    }
+  }
+  
+  // Add smooth scrolling for internal links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

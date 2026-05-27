@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Document Downloads - Upload and Share</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #374151;
+      --subtext-color: #6b7280;
+      --accent-color: #111827;
+      --card-bg: #f9fafb;
+      --border-radius: 0.75rem;
+      --shadow: rgba(0,0,0,0.05) 0px 2px 8px;
+      --max-width: 1200px;
+      --transition-duration: 0.25s;
+      --button-bg: #111827;
+      --button-hover-bg: #374151;
+      --input-border: #d1d5db;
+      --input-focus-border: #4f46e5;
+      --delete-bg: #ef4444; /* red-500 */
+      --delete-hover-bg: #b91c1c; /* red-700 */
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+      background: var(--bg-color);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: var(--bg-color);
+      box-shadow: var(--shadow);
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      user-select: none;
+    }
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 2rem;
+      font-size: 1rem;
+      transition: color var(--transition-duration);
+    }
+    nav a:hover,
+    nav a:focus {
+      color: var(--button-bg);
+      outline: none;
+    }
+
+    main {
+      max-width: var(--max-width);
+      padding: 4rem 2rem 6rem;
+      margin: 0 auto;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--subtext-color);
+      margin: 0;
+    }
+
+    form.upload-form {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    form.upload-form label {
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: 1rem;
+      user-select: none;
+    }
+    form.upload-form input[type="file"] {
+      border: 1px solid var(--input-border);
+      border-radius: var(--border-radius);
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: var(--text-color);
+      transition: border-color var(--transition-duration);
+    }
+    form.upload-form input[type="file"]:focus {
+      outline: none;
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+    }
+    form.upload-form button.submit-btn {
+      align-self: flex-start;
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 0.75rem 2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color var(--transition-duration);
+    }
+    form.upload-form button.submit-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    form.upload-form button.submit-btn:hover:not(:disabled),
+    form.upload-form button.submit-btn:focus:not(:disabled) {
+      background: var(--button-hover-bg);
+      outline: none;
+    }
+
+    .documents-list {
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      display: grid;
+      gap: 1rem;
+    }
+    .doc-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .doc-number {
+      font-weight: 700;
+      color: var(--subtext-color);
+      font-size: 1.125rem;
+      user-select: none;
+      width: 2rem;
+      text-align: right;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .doc-name {
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: 1.125rem;
+      user-select: text;
+      word-break: break-word;
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .doc-download-link,
+    .doc-replace-btn,
+    .doc-delete-btn {
+      border-radius: var(--border-radius);
+      padding: 0.5rem 1.25rem;
+      font-weight: 700;
+      font-size: 1rem;
+      user-select: none;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+      transition: background-color var(--transition-duration);
+      text-align: center;
+      flex-shrink: 0;
+      margin-left: 0.5rem;
+    }
+    .doc-download-link {
+      background: var(--button-bg);
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .doc-download-link:hover,
+    .doc-download-link:focus {
+      background: var(--button-hover-bg);
+      outline: none;
+    }
+
+    .doc-replace-btn {
+      background: #2563eb; /* blue-600 */
+      color: white;
+    }
+    .doc-replace-btn:hover,
+    .doc-replace-btn:focus {
+      background: #1d4ed8; /* blue-700 */
+      outline: none;
+    }
+
+    .doc-delete-btn {
+      background: var(--delete-bg);
+      color: white;
+      margin-left: 0.25rem;
+    }
+    .doc-delete-btn:hover,
+    .doc-delete-btn:focus {
+      background: var(--delete-hover-bg);
+      outline: none;
+    }
+
+    footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--subtext-color);
+      user-select: none;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 3rem 1rem 4rem;
+      }
+      form.upload-form {
+        padding: 1rem 1rem;
+      }
+      .doc-card {
+        flex-wrap: nowrap;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .doc-number {
+        width: auto;
+        text-align: left;
+        margin-bottom: 0.25rem;
+      }
+      .doc-name {
+        margin-bottom: 0.75rem;
+      }
+      .doc-download-link,
+      .doc-replace-btn,
+      .doc-delete-btn {
+        margin-left: 0;
+        width: 100%;
+        white-space: normal;
+        margin-bottom: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" tabindex="0">MyDocs</div>
+    <nav>
+      <a href="#upload">Upload Document</a>
+      <a href="#downloads">Downloads</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Upload Documents for Your Customers</h1>
+      <p>My custmers will be able to download important documents when I upload them here.</p>
+    </section>
+
+    <section id="upload" aria-label="Upload documents form">
+      <form class="upload-form" aria-live="polite" aria-relevant="additions" aria-atomic="true">
+        <label for="fileInput">Select Document to Upload</label>
+        <input type="file" id="fileInput" aria-describedby="fileHelp" accept=".pdf,.doc,.docx,.txt,.xls,.xlsx" />
+        <small id="fileHelp" style="color: var(--subtext-color);">Supported file types: PDF, Word, Excel, Text</small>
+        <button class="submit-btn" type="submit" disabled>Upload Document</button>
+      </form>
+    </section>
+
+    <section id="downloads" aria-label="Available documents for download">
+      <h2 style="text-align:center; color: var(--accent-color); font-weight:700; font-size:2rem; margin-bottom:1rem;">Available Documents</h2>
+      <div class="documents-list" role="list" aria-live="polite" aria-relevant="additions">
+        <!-- Document cards inserted here by JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; @2024 MyDocs-Reaearch Hub. All rights reserved.
+  </footer>
+
+  <script>
+    (() => {
+      const fileInput = document.getElementById('fileInput');
+      const uploadForm = document.querySelector('form.upload-form');
+      const submitBtn = uploadForm.querySelector('button.submit-btn');
+      const documentsList = document.querySelector('.documents-list');
+
+      const STORAGE_KEY = 'uploadedDocuments';
+
+      let documents = [];
+
+      // Render documents with numbering and replace button
+      function renderDocuments() {
+        documentsList.innerHTML = '';
+        if (documents.length === 0) {
+          documentsList.innerHTML = '<p style="color: var(--subtext-color); text-align:center;">No documents uploaded yet.</p>';
+          return;
+        }
+        documents.forEach(({name, dataUrl}, index) => {
+          const card = document.createElement('article');
+          card.className = 'doc-card';
+          card.setAttribute('role','listitem');
+
+          // Number
+          const numberEl = document.createElement('span');
+          numberEl.className = 'doc-number';
+          numberEl.textContent = (index + 1) + '.';
+
+          // Name
+          const nameEl = document.createElement('p');
+          nameEl.className = 'doc-name';
+          nameEl.textContent = name;
+
+          // Download link
+          const downloadLink = document.createElement('a');
+          downloadLink.className = 'doc-download-link';
+          downloadLink.href = dataUrl;
+          downloadLink.download = name;
+          downloadLink.textContent = 'Download';
+          downloadLink.setAttribute('aria-label', `Download document ${name}`);
+
+          // Replace button
+          const replaceBtn = document.createElement('button');
+          replaceBtn.className = 'doc-replace-btn';
+          replaceBtn.type = 'button';
+          replaceBtn.textContent = 'Replace';
+          replaceBtn.setAttribute('aria-label', `Replace document ${name}`);
+
+          // Hidden file input to trigger on replace click
+          const hiddenFileInput = document.createElement('input');
+          hiddenFileInput.type = 'file';
+          hiddenFileInput.accept = '.pdf,.doc,.docx,.txt,.xls,.xlsx';
+          hiddenFileInput.style.display = 'none';
+
+          replaceBtn.addEventListener('click', () => {
+            hiddenFileInput.click();
+          });
+
+          hiddenFileInput.addEventListener('change', () => {
+            if (!hiddenFileInput.files.length) return;
+            const file = hiddenFileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+              const dataUrl = event.target.result;
+              // Replace document at index
+              documents[index] = {
+                name: file.name,
+                dataUrl,
+              };
+              saveDocuments();
+              renderDocuments();
+            };
+
+            reader.readAsDataURL(file);
+          });
+
+          // Delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'doc-delete-btn';
+          deleteBtn.type = 'button';
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.setAttribute('aria-label', `Delete document ${name}`);
+          deleteBtn.addEventListener('click', () => {
+            if(confirm(`Are you sure you want to delete "${name}"?`)) {
+              documents.splice(index, 1);
+              saveDocuments();
+              renderDocuments();
+            }
+          });
+
+          card.appendChild(numberEl);
+          card.appendChild(nameEl);
+          card.appendChild(downloadLink);
+          card.appendChild(replaceBtn);
+          card.appendChild(hiddenFileInput);
+          card.appendChild(deleteBtn);
+
+          documentsList.appendChild(card);
+        });
+      }
+
+      function saveDocuments() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(documents));
+        } catch(e) {
+          alert('Storage quota exceeded. Please delete some documents manually.');
+        }
+      }
+
+      function loadDocuments() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          try {
+            documents = JSON.parse(stored);
+          } catch(e) {
+            documents = [];
+          }
+        }
+      }
+
+      fileInput.addEventListener('change', () => {
+        submitBtn.disabled = !fileInput.files.length;
+      });
+
+      uploadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!fileInput.files.length) return;
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          const dataUrl = event.target.result;
+          documents.push({
+            name: file.name,
+            dataUrl,
+          });
+          saveDocuments();
+          renderDocuments();
+
+          fileInput.value = '';
+          submitBtn.disabled = true;
+        };
+
+        reader.readAsDataURL(file);
+      });
+
+      loadDocuments();
+      renderDocuments();
+    })();
+  </script>
+</body>
+</html>

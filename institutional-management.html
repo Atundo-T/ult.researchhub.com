@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Hub - Institutional Management Business Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --color-text-primary: #ffffff;
+            --color-bg-start: #ffffff;
+            --color-bg-end: #ffffff;
+            --container-max-width: 1200px;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        /* Reset and base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background: 
+                linear-gradient(135deg, rgba(240, 244, 248, 0.9), rgba(226, 232, 240, 0.7)),
+                url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            background-attachment: fixed;
+            animation: backgroundShift 25s ease infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { 
+                background: 
+                    linear-gradient(135deg, rgba(240, 244, 248, 0.9), rgba(226, 232, 240, 0.7)),
+                    url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            }
+            20% { 
+                background: 
+                    linear-gradient(135deg, rgba(219, 234, 254, 0.8), rgba(147, 197, 253, 0.6)),
+                    url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            }
+            40% { 
+                background: 
+                    linear-gradient(135deg, rgba(229, 231, 235, 0.9), rgba(156, 163, 175, 0.7)),
+                    url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            }
+            60% { 
+                background: 
+                    linear-gradient(135deg, rgba(243, 244, 246, 0.8), rgba(209, 213, 219, 0.6)),
+                    url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            }
+            80% { 
+                background: 
+                    linear-gradient(135deg, rgba(224, 242, 254, 0.9), rgba(186, 230, 253, 0.7)),
+                    url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 50%;
+            animation: float 12s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { width: 10px; height: 10px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 16px; height: 16px; left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 8px; height: 8px; left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 12px; height: 12px; left: 40%; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 18px; height: 18px; left: 50%; animation-delay: 3s; }
+        .particle:nth-child(6) { width: 10px; height: 10px; left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 14px; height: 14px; left: 70%; animation-delay: 2.5s; }
+        .particle:nth-child(8) { width: 8px; height: 8px; left: 80%; animation-delay: 4.5s; }
+        .particle:nth-child(9) { width: 12px; height: 12px; left: 90%; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-10vh) rotate(180deg); }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Heading with gradient effect */
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #1e40af, #3b82f6, #1f2937, #374151);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textFlow 4s ease-in-out infinite;
+        }
+
+        @keyframes textFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.6rem;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            color: #374151;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced button with professional effect */
+        .hero-btn {
+            background: linear-gradient(45deg, #1e40af, #3b82f6);
+            color: #ffffff;
+            padding: 1.4rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .hero-btn:hover::before {
+            left: 100%;
+        }
+
+        .hero-btn:hover {
+            background: linear-gradient(45deg, #1d4ed8, #2563eb);
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.4);
+        }
+
+        /* Professional icon effect */
+        .hero-btn::after {
+            content: '🏢';
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .hero-btn:hover::after {
+            opacity: 1;
+            animation: bounce 0.8s ease-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.2); }
+        }
+
+        /* Business Plan Section */
+        .business-plan-section {
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--container-max-width);
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin: 0 auto;
+            backdrop-filter: blur(15px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #1f2937 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.95;
+            font-size: 18px;
+        }
+
+        .item {
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item:hover {
+            background: rgba(248, 250, 252, 0.9);
+        }
+
+        .item-header {
+            padding: 25px 30px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .item-header:hover {
+            background: linear-gradient(90deg, rgba(239, 246, 255, 0.9) 0%, rgba(219, 234, 254, 0.8) 100%);
+        }
+
+        .item-header.active {
+            background: linear-gradient(90deg, rgba(219, 234, 254, 0.95) 0%, rgba(191, 219, 254, 0.9) 100%);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .item-number {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            margin-right: 18px;
+            box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+        }
+
+        .item-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            letter-spacing: 0.5px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+        }
+
+        .download-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .arrow {
+            width: 20px;
+            height: 20px;
+            border: solid #4b5563;
+            border-width: 0 3px 3px 0;
+            padding: 3px;
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .item-header.active .arrow {
+            transform: rotate(-135deg);
+            border-color: #1e40af;
+        }
+
+        .item-content {
+            max-height: 0;
+            overflow: hidden;
+            color: #4b5563;
+            padding: 0 30px;
+            font-size: 16px;
+            line-height: 1.7;
+            background: rgba(249, 250, 251, 0.95);
+            transition: all 0.4s ease;
+            border-top: 1px solid transparent;
+        }
+
+        .item-content.open {
+            padding: 30px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .item-content p {
+            margin: 0 0 20px 0;
+        }
+
+        .item-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-content {
+            text-align: center;
+            margin-top: 50px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: var(--container-max-width);
+            margin-left: auto;
+            margin-right: auto;
+            backdrop-filter: blur(15px);
+        }
+
+        .footer-content h3 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .footer-content p {
+            color: #4b5563;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.3);
+        }
+
+        .footer-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.2rem;
+            }
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            .hero-btn {
+                padding: 1.2rem 2.5rem;
+                font-size: 1.2rem;
+            }
+            .item-header {
+                padding: 20px 25px;
+            }
+            .item-title {
+                font-size: 18px;
+            }
+            .controls {
+                gap: 15px;
+            }
+            .download-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">INSTITUTIONAL MANAGEMENT EXCELLENCE</h1>
+        <p class="hero-subtitle">Transforming Organizations Through Strategic Leadership & Operational Excellence</p>
+        <a href="#business-plan" class="hero-btn">Explore Business Plan</a>
+    </section>
+
+    <!-- Business Plan Section -->
+    <section id="business-plan" class="business-plan-section">
+        <div class="container">
+            <div class="header">
+                <h1>Institutional Management Business Plan</h1>
+                <p>Strategic Leadership & Organizational Excellence - Complete Business Documentation</p>
+            </div>
+
+            <div id="dropdown-list">
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">1</div>
+                            <span class="item-title">EXECUTIVE SUMMARY</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('executive-summary')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Download
+                            </a>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <p>Our institutional management consultancy provides comprehensive organizational transformation services for educational institutions, healthcare facilities, government agencies, and corporate entities. We specialize in strategic planning, operational optimization, and leadership development.</p>
+                        <p>With over 15 years of combined experience, our team delivers measurable results through data-driven approaches, stakeholder engagement, and sustainable change management practices that enhance institutional effectiveness and accountability.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">2</div>
+                            <span class="item-title">MARKET ANALYSIS</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('market-analysis')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Download
+                            </a>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <p>The institutional management consulting market is experiencing significant growth, driven by increasing demands for organizational efficiency, regulatory compliance, and digital transformation. Our target market includes universities, hospitals, government departments, and large corporations seeking operational excellence.</p>
+                        <p>Market research indicates a 12% annual growth rate in management consulting services, with particular demand for specialized institutional expertise. Our competitive advantage lies in sector-specific knowledge and proven methodologies for institutional transformation.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">3</div>
+                            <span class="item-title">SERVICE PORTFOLIO</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('service-portfolio')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Download
+                            </a>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <p>Our comprehensive service portfolio includes Strategic Planning & Governance, Operational Excellence & Process Optimization, Leadership Development & Capacity Building, Performance Management Systems, and Digital Transformation initiatives.</p>
+                        <p>Additional services encompass Organizational Restructuring, Compliance & Risk Management, Quality Assurance Programs, Stakeholder Engagement Strategies, and Change Management Implementation with measurable outcomes and sustainable results.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">4</div>
+                            <span class="item-title">ORGANIZATIONAL STRUCTURE</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('organizational-structure')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Download
+                            </a>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <p>Our organizational structure features a flat hierarchy with specialized practice areas led by senior consultants with advanced degrees and extensive institutional experience. Teams are organized by sector expertise: Education, Healthcare, Government, and Corporate.</p>
+                        <p>The structure includes a Managing Director, Practice Leaders, Senior Consultants, Associate Consultants, and Research Analysts. Each team maintains quality standards through peer review processes and continuous professional development programs.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">5</div>
+                            <span class="item-title">OPERATIONAL PLAN</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('operational-plan')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Download
+                            </a>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <p>Our operational framework emphasizes client-centric delivery through standardized methodologies, quality assurance protocols, and continuous improvement processes. We utilize project management best practices and technology-enabled collaboration tools.</p>
+                        <p>Key operational elements include client onboarding procedures, engagement management protocols, knowledge management systems, performance metrics tracking, and post-engagement support services to ensure sustainable implementation of recommendations.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">6</div>
+                            <span class="item-title">FINANCIAL PROJECTIONS</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('financial-projections')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Download
+                            </a>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <p>Financial projections show strong growth potential with initial investment requirements of $150,000 for startup costs, including office setup, technology infrastructure, and initial marketing. Revenue projections indicate break-even within 18 months.</p>
+                        <p>Five-year financial forecasts demonstrate sustainable profitability with projected annual revenue growth of 25-30%, driven by client expansion, service diversification, and market penetration strategies in key institutional sectors.</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="item-header">
+                        <div class="title-section">
+                            <div class="item-number">7</div>
+                            <span class="item-title">RISK ANALYSIS & MITIGATION</span>
+                        </div>
+                        <div class="controls">
+                            <a href="#" class="download-btn" onclick="downloadSection('risk-analysis')">
+                                <svg class="download-icon" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+            Download
+          </a>
+        </div>
+      </div>
+      <div class="item-content">
+        <p>Supporting documents including market research data, legal documentation, permits and licenses, supplier agreements, and technical specifications.</p>
+        <p>Additional resources, references, and supplementary information that support the business plan's main sections and strategic decisions.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-content">
+  <h3>Get the Complete Business Plan</h3>
+  <p>To access the full detailed Business Plan with all financial projections, market analysis, and implementation strategies, purchase the complete package for <strong>KES 1,000/=</strong></p>
+  <p><i><b>Remember to specify your business title during purchase for customization</b></i></p>
+  <p>Thank you for trusting Research Hub for your business planning needs</p>
+  
+  <div class="footer-links">
+    <a href="tvet.html" aria-current="page">← Back to Business Plans</a>
+    <a href="index.html">🏠 Home Page</a>
+    <a href="#contact">📞 Contact Us</a>
+  </div>
+</div>
+
+<script>
+  // Dropdown functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('dropdown-list');
+    const items = container.querySelectorAll('.item');
+
+    items.forEach(item => {
+      const header = item.querySelector('.item-header');
+      const content = item.querySelector('.item-content');
+
+      header.addEventListener('click', (e) => {
+        // Don't trigger dropdown if clicking download button
+        if (e.target.closest('.download-btn')) {
+          return;
+        }
+
+        // Close all other open dropdowns
+        items.forEach(otherItem => {
+          if (otherItem !== item) {
+            const otherContent = otherItem.querySelector('.item-content');
+            const otherHeader = otherItem.querySelector('.item-header');
+            otherContent.style.maxHeight = null;
+            otherContent.classList.remove('open');
+            otherHeader.classList.remove('active');
+          }
+        });
+
+        // Toggle current item
+        const isOpen = content.classList.contains('open');
+        if (isOpen) {
+          content.style.maxHeight = null;
+          content.classList.remove('open');
+          header.classList.remove('active');
+        } else {
+          content.classList.add('open');
+          content.style.maxHeight = content.scrollHeight + 'px';
+          header.classList.add('active');
+        }
+      });
+    });
+  });
+
+  // Download functionality
+  function downloadSection(sectionName) {
+    // This is where you would implement the actual download logic
+    // For demonstration, I'll show how you can structure this
+    
+    // Example: You can store your PDF files in a 'documents' folder
+    const documentUrls = {
+      'business-description': './documents/business-description.pdf,.doc,.docx,.txt,.xls,.xlsx',
+      'market-share': './documents/market-share.pdf,.doc,.docx,.txt,.xls,.xlsx',
+      'organisation-plan': './documents/organisation-plan.pdf,.doc,.docx,.txt,.xls,.xlsx',
+      'management-plan': './documents/management-plan.pdf,.doc,.docx,.txt,.xls,.xlsx',
+      'financial-plan': './documents/financial-plan.pdf,.doc,.docx,.txt,.xls,.xlsx',
+      'appendices': './documents/appendices.pdf,.doc,.docx,.txt,.xls,.xlsx'
+    };
+
+    const url = documentUrls[sectionName];
+    
+    if (url) {
+      // Create a temporary link element and trigger download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${sectionName.replace('-', '_')}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // If document doesn't exist, show a message
+      alert(`Document for ${sectionName.replace('-', ' ').toUpperCase()} will be available soon. Please contact us for more information.`);
+    }
+  }
+</script>
+
+</body>
+</html>                                    
